@@ -1,0 +1,84 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<div class="ui grid">
+  <div class="sixteen wide column">
+
+    <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+      <span>แบบสอบถามระบบการควบคุมภายใน</span>
+    </div>
+
+    <div class="ui bottom attached segment">
+      <form class="ui form" [formGroup]="formGroups" (submit)="onSubmit($event)">
+        <div class="ui center aligned grid">
+          <div class="column fourteen wide">
+            
+            <div class="ui centered inline fields grid" style="margin:0 !important;">
+              <div class="one wide field" [ngClass]="{ 'error': invalidFrom }">
+                <label>วันที่</label>
+              </div>
+              <div class="four wide field" [ngClass]="{ 'error': invalidFrom }">
+                <div class="ui input">
+                  <div class="ui calendar" id="qtnFromCalendar">
+                    <div class="ui input left icon">
+                      <i class="calendar alter ante outline icon"></i>
+                      <input type="calendar" readonly="" formControlName="qtnFrom" placeholder="วว/ดด/ปปปป" id="qtnFrom"
+                        name="qtnFrom" autocomplete="off">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="one wide field">
+                <label class="full-width text-center">ถึง</label>
+              </div>
+              <div class="one wide field" [ngClass]="{ 'error': invalidTo }">
+                <label>วันที่</label>
+              </div>
+              <div class="four wide field" [ngClass]="{ 'error': invalidTo }">
+                <div class="ui input">
+                  <div class="ui calendar" id="qtnToCalendar">
+                    <div class="ui input left icon">
+                      <i class="calendar alter ante outline icon"></i>
+                      <input type="calendar" readonly="" formControlName="qtnTo" placeholder="วว/ดด/ปปปป" id="qtnTo"
+                        name="qtnTo" autocomplete="off">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column fourteen wide center aligned">
+            <button type="submit" class="ui mini primary button">
+              <i class="search icon"></i>
+              ค้นหา
+            </button>
+            <button type="reset" (click)="clear()" class="ui mini button">
+              <i class="refresh icon"></i>
+              ล้างข้อมูล
+            </button>
+            <button type="button" [routerLink]="'/int02/2'" class="ui mini green button">
+              <i class="add icon"></i>
+              รายการใหม่
+            </button>
+          </div>
+        </div>
+      </form>
+      <div class="ui grid">
+        <div class="sixteen wide column">
+          <table id="datatable" style="width: 100%;" class="ui small collapsing celled table aligned hover nowrap striped selectable">
+            <thead>
+              <tr style="text-align: center !important;">
+                <th>ลำดับที่</th>
+                <th>วันที่สร้างแบบสอบถาม</th>
+                <th>ผู้สร้างแบบสอบถาม</th>
+                <th>วันที่แก้ไขแบบสอบถามล่าสุด</th>
+                <th>ผู้แก้ไขแบบสอบถามล่าสุด</th>
+                <th>ปีงบประมาณ</th>
+                <th>สถานะ</th>
+                <th style="width: 40px">จัดการ</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

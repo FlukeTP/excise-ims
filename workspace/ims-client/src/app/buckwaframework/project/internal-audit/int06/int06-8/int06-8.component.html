@@ -1,0 +1,217 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+
+<!-- <app-breadcrumb [route]="breadcrumb"></app-breadcrumb> -->
+<div class="ui centered grid" *ngIf="this.statusTime && this.statusTime.length == 0">
+    <div class="centered row full-height">
+        <div class="eight wide column nodata">
+            <h2 class="ui header">
+                <div class="auto">
+                    <i class="exclamation triangle icon"></i>
+                    <div class="content">
+                        ขณะนี้ไม่สามารถบันทึกข้อมูลการเบิกค่าสาธารณูปโภคได้<br> เนื่องจากระบบได้ปิดการบันทึกข้อมูลการเบิกค่าสาธารณูปโภคแล้ว
+                        <div class="sub header">กรุณาเข้ามาใหม่อีกครั้ง</div>
+                    </div>
+                </div>
+            </h2>
+        </div>
+    </div>
+</div>
+
+<ng-container *ngIf="this.statusTime && this.statusTime.length > 0">
+    <form class="ui grid" (submit)="onSave(f)" #f="ngForm">
+        <div class="sixteen wide column">
+            <div class="ui attached segment">
+                <div class="ui form">
+
+                    <div class="inline fields">
+                        <div class="three wide field">
+                            &nbsp;
+                        </div>
+
+                        <div class="four wide field" style="text-align: right">
+                            <label class="custom-label-w-20">เงินที่ได้รับจัดสรรเป็นค่าสาธารณูปโภค (ทั้งปี)</label>
+                        </div>
+
+                        <div class="four wide field {{ f.submitted && f.controls.allocatedBudget.invalid ? 'error' : '' }}">
+                            <input type="number" autocomplete="off" name="allocatedBudget" id="allocatedBudget" ngModel required>
+                        </div>
+
+                        <div class="two wide field">
+                            <button class="ui mini green button">
+                            <i class="save icon"></i> บันทึก
+                        </button>
+                        </div>
+
+                        <div class="three wide field">
+                            &nbsp;
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-container>
+
+<form class="ui grid" id="showForm1" (submit)="onAdd(f2)" #f2="ngForm">
+    <div class="sixteen wide column">
+        <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+            <span>บันทึกข้อมูลการเบิกค่าสาธารณูปโภค</span>
+        </div>
+
+        <div class="ui attached segment">
+            <div class="ui form">
+
+                <div class="inline fields">
+                    <div class="five wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field">
+                        <label class="custom-label-w-20">ประเภทค่าสาธารณูปโภค</label>
+                        <select class="ui search dropdown ai search" name="publicUtilityType" id="publicUtilityType" style="width: 100% !important" ngModel>
+                                <option value="">กรุณาเลือก</option>
+                                <option *ngFor="let data of publicUtilityTypeList" value="{{data}}">{{data}}</option>
+                              </select>
+                    </div>
+
+                    <div class="five wide field">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field ">
+                        <label class="custom-label-w-15" style="margin-right: 0px;">ใบแจ้งหนี้เดือน</label>
+                        <div class="ui calendar" id="monthInVoiceDate">
+                            <div class="ui input left icon">
+                                <i class="calendar alter nate outline icon"></i>
+                                <input type="text" name="monthInVoice" id="monthInVoice" autocomplete="off" ngModel>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="two wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field">
+                        <label class="custom-label-w-15">เลขที่ใบแจ้งหนี้</label>
+                        <input type="text" name="inVoiceNumber" id="inVoiceNumber" ngModel>
+                    </div>
+
+                    <div class="one wide field">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field">
+                        <label class="custom-label-w-15" style="margin-right: 0px;">วันที่ในใบแจ้งหนี้</label>
+                        <div class="ui calendar" id="inVoice">
+                            <div class="ui input left icon">
+                                <i class="calendar alter nate outline icon"></i>
+                                <input type="text" readonly="" name="inVoiceDate" id="inVoiceDate" ngModel>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="two wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field ">
+                        <label class="custom-label-w-15">เลขที่ ขบ.</label>
+                        <input type="text" name="withDrawalNumber" id="withDrawalNumber" ngModel>
+                    </div>
+
+                    <div class="one wide field">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field">
+                        <label class="custom-label-w-15" style="margin-right: 0px;">วดป. ที่เบิก</label>
+                        <div class="ui calendar" id="withDrawal">
+                            <div class="ui input left icon">
+                                <i class="calendar alter nate outline icon"></i>
+                                <input type="text" readonly="" name="withDrawalDate" id="withDrawalDate" ngModel>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="two wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field ">
+                        <label class="custom-label-w-15">จำนวนเงิน</label>
+                        <input type="text" name="amount" id="amount" ngModel>
+                    </div>
+
+                    <div class="one wide field">
+                        &nbsp;
+                    </div>
+                </div>
+
+
+                <div class="ui center aligned grid" style="margin-top: 20px;">
+                    <div class="sixteen wide column">
+                        <button class="ui tiny green button" type="submit">
+                          <i class="add icon"></i> เพิ่ม
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</form>
+
+<div class="ui segment" id="showForm2">
+    <table id="dataTable" class="ui small celled table striped selectable" style="width: 100%;">
+        <thead>
+            <tr style="text-align: center">
+                <th>ลำดับที่</th>
+                <th>ประเภทค่าสาธารณูปโภค</th>
+                <th>ใบแจ้งหนี้เดือน</th>
+                <th>เลขที่ใบแจ้งหนี้</th>
+                <th>วันที่ในใบแจ้งหนี้</th>
+                <th>เลขที่ ขบ.</th>
+                <th>วดป. ที่เบิก</th>
+                <th>จำนวนเงิน</th>
+                <th>จัดการ</th>
+            </tr>
+            <!-- <tr style="display:none">
+                <td>แก้ไข</td>
+                <td>ลบ</td>
+            </tr> -->
+        </thead>
+    </table>
+
+    <div class="ui center aligned grid" style="margin-top: 20px;">
+        <div class="sixteen wide column">
+            <button class="ui mini green button" (click)="onSaveTable()">
+              <i class="save icon"></i> บันทึก
+            </button>
+
+            <button class="ui mini primary button" (click)="confirmSend()">
+                <i class="paper plane icon"></i> ยืนยันการส่ง
+              </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+#tableData tr td:nth-child(3), #tableData tr  td:nth-child(4), 
+#tableData tr td:nth-child(5), #tableData tr td:nth-child(6), #tableData tr td:nth-child(7), 
+#tableData tr td:nth-child(8), #tableData tr td:nth-child(9), #tableData tr td:nth-child(10), 
+#tableData tr td:nth-child(11), #tableData tr  td:nth-child(12), #tableData tr td:nth-child(13), 
+#tableData tr td:nth-child(14), #tableData tr td:nth-child(15), td:nth-child(16) {
+    text-align: right;
+} 
+
+#tableData tr td:nth-child(1) {
+    text-align: center;
+}
+
+#tableSetting tr td:nth-child(1), #tableSetting tr td:nth-child(2), 
+#tableSetting tr td:nth-child(4), #tableSetting tr td:nth-child(8),
+#tableSetting tr td:nth-child(9) {
+    text-align: center;
+}
+
+#tableSetting tr td:nth-child(3), #tableSetting tr td:nth-child(5), 
+#tableSetting tr td:nth-child(6) {
+    text-align: right;
+}
+
+.animate-show-hide.ng-hide {
+    opacity: 0;
+  }
+  
+  .animate-show-hide.ng-hide-add,
+  .animate-show-hide.ng-hide-remove {
+    transition: all linear 0.5s;
+  }
+  
+  .check-element {
+    border: 1px solid black;
+    opacity: 1;
+    padding: 10px;
+  } 
+.inputfile {
+    padding-right: 25px !important;
+    padding-left: 40px !important;
+}
+
+.butt-upload {
+    position: absolute;
+    top: 8px;
+    left: 223px;
+}

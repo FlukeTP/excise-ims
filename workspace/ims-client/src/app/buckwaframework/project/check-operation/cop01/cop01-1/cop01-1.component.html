@@ -1,0 +1,254 @@
+
+
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+
+<div class="ui grid">
+    <div class="sixteen wide column">
+        <h2 class="ui header">จัดทำแผนการตรวจปฏิบัติการ</h2>
+        <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+            <span>จัดทำแผนการตรวจปฏิบัติการ</span>
+        </div>
+        <div class="ui attached segment">
+            <div class="ui form">
+
+                <div class="inline fields ">
+                    <div class="one wide field "> </div>
+                    <div class="three wide field ">
+                        <label>แผนตรวจปฏิบัติการเลขที่ :</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" placeholder="" value="" class="custom-readonly">
+                    </div>
+                    <div class="one wide field "> </div>
+                    <div class="three wide field">
+                        <label>วันที่จัดทำแผน :</label>
+                    </div>
+                    <div class="four wide field ">
+                        <div class="ui input left icon">
+                            <i class="calendar alter nate outline icon"></i>
+                            <input type="text" id="date3" class="custom-readonly">
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="ui grid center aligned">
+                    <div class="sixteen wide column">
+                        <b id="planName" name="planName">{{planName}}</b>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="inline fields">
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>เป้าหมายกระทรวงการคลัง :</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" placeholder="" class="custom" name="minisFinanceTarget" id="minisFinanceTarget" [(ngModel)]="minisFinanceTarget">
+                    </div>
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ยุทธศาสตร์กระทรวงการคลัง :</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" placeholder="" class="custom" name="minisFinanceStrat" id="minisFinanceStrat" [(ngModel)]="minisFinanceStrat">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ยุทธศาสตร์กรมสรรพสามิต :</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" placeholder="" class="custom" name="minisFinanceExcise" id="minisFinanceExcise" [(ngModel)]="minisFinanceExcise">
+                    </div>
+                    <div class="one wide field "> </div>
+                    <div class="three  wide field required field">
+                        <label>กลยุทธ์ :</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" placeholder="" class="custom" name="strategy" id="strategy" [(ngModel)]="strategy">
+                    </div>
+                </div>
+
+                <div class="inline fields" *ngFor="let num of numbers; let i = index" [attr.data-index]="i">
+                    <div class="one wide field "></div>
+                    <div class="three wide field ">
+                        <label>วัตถุประสงค์&nbsp;&nbsp;{{i+1}} : </label>
+                    </div>
+                    <div class="eleven wide field">
+                        <input type="text" placeholder="" class="custom" name="objective{{i+1}}" id="objective{{i+1}}">
+                    </div>
+                    <div class="one wide field">
+                        <a (click)="onDelField(i)" *ngIf="i!==0" style="cursor: pointer;color: red">
+                            <i class="minus icon"></i> ลบ
+                        </a>
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="four wide field "></div>
+                    <i class="plus icon"></i>
+                    <div class="ten wide field ">
+                        <a (click)="onAddField()" style="cursor:  pointer;">เพิ่มวัตถุประสงค์</a>
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ตัวชี้วัดหลัก : </label>
+                    </div>
+                    <div class="twelve wide field">
+                        <input type="text" placeholder="" class="custom" name="keyIndicators" id="keyIndicators" [(ngModel)]="keyIndicators">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ผู้จัดทำแผนงาน/โครงการ : </label>
+                    </div>
+                    <div class="twelve wide field">
+                        <input type="text" placeholder="" class="custom" name="planner" id="planner" [(ngModel)]="planner">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ผู้รับผิดชอบหลัก :</label>
+                    </div>
+                    <div class="twelve wide field">
+                        <input type="text" placeholder="" class="custom" name="primaryResponse" id="primaryResponse" [(ngModel)]="primaryResponse">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ชื่อ :</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" placeholder="" class="custom" name="primaryName" id="primaryName" [(ngModel)]="primaryName">
+                    </div>
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ตำแหน่ง :</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" placeholder="" class="custom" name="primaryPosition" id="primaryPosition" [(ngModel)]="primaryPosition">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ผู้อนุมัติ :</label>
+                    </div>
+                    <div class="twelve wide field">
+                        <input type="text" placeholder="" class="custom" name="approver" id="approver" [(ngModel)]="approver">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ชื่อ :</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" placeholder="" class="custom" name="approverName" id="approverName" [(ngModel)]="approverName">
+                    </div>
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ตำแหน่ง :</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" placeholder="" class="custom" name="approverPosition" id="approverPosition" [(ngModel)]="approverPosition">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ตัวชี้วัดหลัก :</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" placeholder="" class="custom" name="" id="" [(ngModel)]="keyIndicators">
+                    </div>
+                    <div class="one wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ผู้จัดทำแผนงาน/โครงการ :</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" placeholder="" class="custom" name="" id="" [(ngModel)]="planner">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field"> </div>
+                    <div class="three wide field required field">
+                        <label>ระยะเวลาของแผนงานโครงการ :</label>
+                    </div>
+                    <div class="ui calendar" id="calendar">
+                        <div class="ui input left icon ">
+                            <i class="calendar alter nate outline icon"></i>
+                            <input type="calendar" id="calendarraw" name="calendarraw" [attr.required]="true" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="two wide field "> </div>
+                    <div class="three wide field required field">
+                        <label>ถึง</label>
+                    </div>
+                    <div class="ui calendar" id="calendar1">
+                        <div class="ui input left icon">
+                            <i class="calendar alter nate outline icon"></i>
+                            <input type="calendar" id="calendar1raw" name="calendar1raw" [attr.required]="true" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field "> </div>
+                    <div class="three wide field ">
+                        <label>โทรศัพท์:</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" placeholder="" class="custom" name="phone" id="phone" maxlength="10" size="10" [(ngModel)]="phone">
+                    </div>
+                    <div class="eight wide field "> </div>
+                </div>
+
+                <div class="ui grid center aligned">
+                    <div class="sixteen wide column">
+                        <b>เนื้อหาแผนการตรวจปฏิบัติการ </b>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="inline fields">
+                    <div class="four wide field "></div>
+                    <div class="eleven wide field">
+                        <textarea type="text" placeholder="" class="custom" name="planDetail" id="planDetail" [(ngModel)]="planDetail"></textarea>
+                    </div>
+                    <div class="four wide field "></div>
+                </div>
+
+                <div class="inline fields ui center aligned grid">
+                    <button class="ui mini primary button" (click)="saveOaOperPlan()">
+                        <i class="save icon"></i> บันทึก
+                    </button>
+                    <button class="ui mini button" (click)="reset()">
+                        <i class="refresh icon"></i>
+                        ล้างข้อมูล
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

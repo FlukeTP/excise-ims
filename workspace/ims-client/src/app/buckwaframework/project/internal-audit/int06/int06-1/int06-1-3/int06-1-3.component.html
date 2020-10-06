@@ -1,0 +1,138 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<!-- step -->
+<div class="ui ordered steps full-width">
+  <div class="completed step">
+    <div class="content">
+      <div class="title">งบทดลอง</div>
+      <div class="description">อัปโหลดสำเร็จ</div>
+    </div>
+  </div>
+  <div class="completed step">
+    <div class="content">
+      <div class="title">บัญชีแยกประเภท</div>
+      <div class="description">อัปโหลดสำเร็จ</div>
+    </div>
+  </div>
+  <div class="active step">
+    <div class="content">
+      <div class="title">ตรวจสอบค่าใช้จ่าย</div>
+      <div class="description">กำลังดำเนินการ</div>
+    </div>
+  </div>
+</div>
+<div class="ui grid">
+  <div class="sixteen wide column">
+    <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+      <span>เลือกข้อมูลตรวจสอบค่าใช้จ่าย</span>
+    </div>
+    <!-- form search -->
+    <div class="ui attached segment">
+      <form class="ui form">
+        <input type="hidden" id="searchFlag" name="searchFlag">
+        <div class="inline fields centered ui grid">
+          <div class="three wide field required">
+            <label class="text-right full-width">สำนักงานสรรพสามิตภาค</label>
+          </div>
+          <div class="four wide field ">
+            <select class="ui dropdown full-width" [(ngModel)]="form.sector" name="sector" id="sector" (change)="changeSector($event)">
+              <option value="">กรุณาเลือก</option>
+              <option *ngFor="let item of sectorList" value="{{item.lovId}}">{{item.subTypeDescription}}</option>
+            </select>
+          </div>
+          <div class="three wide field required">
+            <label class="text-right full-width">สำนักงานสรรพสามิตพื้นที่</label>
+          </div>
+          <div class="four wide field ">
+            <select class="ui dropdown full-width" [(ngModel)]="form.area" name="area" id="area">
+              <option value="">กรุณาเลือก</option>
+              <option *ngFor="let item of araeList" value="{{item.lovId}}">{{item.subTypeDescription}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="inline fields centered ui grid">
+          <div class="three wide field required">
+            <label class="text-right full-width">ปีงบประมาณ</label>
+          </div>
+          <div class="four wide field ">
+            <select class="ui dropdown full-width" [(ngModel)]="form.year" name="year" id="year">
+              <option value="">กรุณาเลือก</option>
+              <option *ngFor="let item of yearList" value="{{item.value}}">{{item.label}}</option>
+            </select>
+          </div>
+          <div class="seven wide field ">
+            
+          </div>
+        </div><br><br>
+        <div class="ui stackable center aligned page grid">
+          <button class="ui mini green button" type="button" (click)="search()"><i class="clipboard check icon"></i>ตรวจสอบ</button>
+          <button class="ui mini gray button " type="button" (click)="clear()"><i class="sync icon"></i>ล้างข้อมูล</button>
+        </div><br>
+      </form>
+    </div>
+
+
+    <!-- table -->
+    <div class="ui segment">
+      <table id="dataTable" class="ui small celled table nowrap striped selectable" style="width: 100%">
+        <thead>
+          <tr style="text-align: center !important">
+            <th style="text-align: center !important" rowspan="2">ลำดับที่</th>
+            <th style="text-align: center !important" rowspan="2">รหัสบัญชี</th>
+            <th style="text-align: center !important" rowspan="2">ชื่อบัญชี</th>
+            <th style="text-align: center !important" colspan="3">กิจกรรม (รับโอนจากกรมฯ)</th>
+            <th style="text-align: center !important" rowspan="2">รวมรับ</th>
+            <th style="text-align: center !important" colspan="3">การเบิกจ่ายจริงแยกตามกิจกรรมตามทะเบียนคุม</th>
+            <th style="text-align: center !important" rowspan="2">รวมรับ</th>
+            <th style="text-align: center !important" rowspan="2">งบทดลอง</th>
+            <th style="text-align: center !important; background-color: #fefbd8 " rowspan="2">ผลต่างงบทดลอง</th>
+            <th style="text-align: center !important" rowspan="2">บัญชีแยกประเภท</th>
+            <th style="text-align: center !important; background-color: #fefbd8 " rowspan="2">ผลต่างบัญชีแยกประเภท</th>
+            <th style="text-align: center !important" colspan="3">คงเหลือ</th>
+            <th style="text-align: center !important" rowspan="2">คงเหลือรวม</th>
+            <th style="text-align: center !important" colspan="4">ถัวจ่าย</th>
+            <th style="text-align: center !important" colspan="2">เหลือสุทธิ</th>
+            <th style="text-align: center !important" rowspan="2">หมายเหตุ</th>
+          </tr>
+          <tr>
+            <th style="text-align: center !important">การบริหาร</th>
+            <th style="text-align: center !important">ปราบปราม</th>
+            <th style="text-align: center !important">เงินนอกงปม.</th>
+ 
+            <th style="text-align: center !important">การบริหาร</th>
+            <th style="text-align: center !important">ปราบปราม</th>
+            <th style="text-align: center !important">เงินนอกงปม.</th>
+ 
+            <th style="text-align: center !important">การบริหาร</th>
+            <th style="text-align: center !important">ปราบปราม</th>
+            <th style="text-align: center !important">เงินนอกงปม.</th>
+ 
+            <th style="text-align: center !important">ถัวเป็นเงิน</th>
+            <th style="text-align: center !important">ถัวเป็นให้</th>
+            <th style="text-align: center !important">ถัวมาเงิน</th>
+            <th style="text-align: center !important">ถัวมาจาก</th>
+ 
+            <th style="text-align: center !important">เงินงบ</th>
+            <th style="text-align: center !important">เงินนอก</th>
+          </tr>
+        </thead>
+      </table><br>
+      
+      <div class="ui stackable center aligned page grid">        
+        <a class="ui mini gray button " href="#" routerLink="/int06/1/1"><i class="reply icon"></i>จบการทำงาน</a>
+      </div><br>
+    </div>
+
+    <!-- modal detail -->
+    <div class="ui modal" id="detail">
+      <div class="header">
+        หมายเหตุ
+      </div>
+      <div class="content" id="des">
+        
+      </div>
+      <div class="actions">
+        <div class="ui deny button">
+          ปิด
+        </div>
+      </div>
+    </div>

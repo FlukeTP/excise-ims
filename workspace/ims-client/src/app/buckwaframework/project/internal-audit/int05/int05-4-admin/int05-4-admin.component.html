@@ -1,0 +1,155 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<div class="ui grid">
+    <div class="sixteen wide column">
+
+        <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+            <span>ค้นหาข้อมูลการจัดซื้อจัดจ้าง</span>
+        </div>
+
+        <div class="ui attached segment">
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="one wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field ">
+                        <label class="custom-label-w-20">สำนักงานสรรพสามิตภาค</label>
+                        <select class="ui search dropdown ai search" style="width: 100% !important">
+                        <option value=""></option>
+                        <option value="angular">Angular</option>
+                        <option value="css">CSS</option>
+                        <option value="design">Graphic Design</option>
+                        <option value="ember">Ember</option>
+                        <option value="html">HTML</option>
+                        <option value="ia">Information Architecture</option>
+                        <option value="javascript">Javascript</option>
+                        <option value="mech">Mechanical Engineering</option>
+                      </select>
+                    </div>
+
+                    <div class="two wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field">
+                        <label class="custom-label-w-20">สำนักงานสรรพสามิตพื้นที่</label>
+                        <select class="ui search dropdown ai search" style="width: 100% !important">
+                        <option value=""></option>
+                        <option value="angular">Angular</option>
+                        <option value="css">CSS</option>
+                        <option value="design">Graphic Design</option>
+                        <option value="ember">Ember</option>
+                        <option value="html">HTML</option>
+                        <option value="ia">Information Architecture</option>
+                        <option value="javascript">Javascript</option>
+                        <option value="mech">Mechanical Engineering</option>
+                      </select>
+                    </div>
+
+                    <div class="one wide field">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field ">
+                        <label class="custom-label-w-20">สำนักงานสรรพสามิตพื้นที่สาขา</label>
+                        <select class="ui search dropdown ai search" style="width: 100% !important">
+                        <option value=""></option>
+                        <option value="angular">Angular</option>
+                        <option value="css">CSS</option>
+                        <option value="design">Graphic Design</option>
+                        <option value="ember">Ember</option>
+                        <option value="html">HTML</option>
+                        <option value="ia">Information Architecture</option>
+                        <option value="javascript">Javascript</option>
+                        <option value="mech">Mechanical Engineering</option>
+                      </select>
+                    </div>
+
+                    <div class="two wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field">
+                        <label class="custom-label-w-20" style="margin-right: 0px;">ปีงบประมาณ</label>
+                        <div class="ui calendar" id="budgetYear">
+                            <div class="ui input left icon">
+                                <i class="calendar alter nate outline icon"></i>
+                                <input type="text" readonly="" name="budgetYearData" id="budgetYearData">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="one wide field">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field ">
+                        <label class="custom-label-w-20">วิธีการจัดซื้อจัดจ้าง</label>
+                        <select class="ui search dropdown ai search" name="supplyChoice" [(ngModel)]="supplyChoice">
+                            <option value=""></option>
+                            <option *ngFor="let item of supplyChoiceList" value="{{item}}">{{item}}</option>
+                        </select>
+                    </div>
+
+                    <div class="two wide field">
+                        &nbsp;
+                    </div>
+
+                    <div class="six wide field">
+                        <label class="custom-label-w-20">ประเภทงบรายจ่าย</label>
+                        <select class="ui search dropdown ai search" name="budgetType" [(ngModel)]="budgetType">
+                            <option value=""></option>
+                            <option *ngFor="let item of budgetTypeList" value="{{item}}">{{item}}</option>
+                        </select>
+                    </div>
+
+                    <div class="one wide field">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <div class="ui center aligned grid" style="margin-top: 20px;">
+                    <div class="sixteen wide column">
+                        <button class="ui mini primary button" (click)="uploadFile()">
+                          <i class="search icon"></i> ค้นหา
+                        </button>
+
+                        <button class="ui mini button" (click)="clearFile()">
+                          <i class="sync icon"></i> ล้างข้อมูล
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui segment" id="showData">
+                <table id="dataTable" class="ui small celled table striped selectable" style="width: 100%;">
+                    <thead>
+                        <tr style="text-align: center">
+                            <th>ปีงบประมาณ</th>
+                            <th>เลขทีหนังสืออนุมัติเบิกจ่าย</th>
+                            <th>เลข EGP</th>
+                            <th>ชื่อโครงการ</th>
+                            <th>จำนวนเงิน ซื้อ/จ้าง/เช่า</th>
+                            <th>สถานะ</th>
+                            <th>อัพเดท</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

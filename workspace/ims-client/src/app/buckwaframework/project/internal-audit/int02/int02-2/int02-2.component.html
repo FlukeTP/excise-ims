@@ -1,0 +1,256 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<div id="int02-2" class="ui grid">
+  <div class="sixteen wide column">
+    <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+      <span>แบบสอบถามระบบการควบคุมภายใน</span>
+    </div>
+    <div class="ui bottom attached segment">
+      <form class="ui form" (submit)="onAdd($event)" ngNativeValidate>
+        <div class="inline three fields">
+          <div class="field">
+            <label>ด้านที่ตรวจ (เดิม)</label>
+            <select class="ui search selection dropdown ai" name="departmentName" id="departmentName" (change)="setDepartmentName('old')"
+              [(ngModel)]="departmentName">
+              <option value="">ด้านที่ตรวจ (เดิม)</option>
+              <option *ngFor="let list of departmentNameArr" value="{{list.description}}">{{list.description}}</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>ด้านที่ตรวจ (ใหม่)</label>
+            <input type="text" style="width: 100%" placeholder="หน่วยรับตรวจ" name="departmentNameNew" id="departmentNameNew"
+              (keyup)="setDepartmentName('new')" [(ngModel)]="departmentNameNew">
+          </div>
+          <div class="field">
+            <label></label>
+            <div class="ui input" style="margin-top: 1.25em;">
+              <button type="submit" style="margin-left: auto;" class="ui mini green button {{ notNullDepartment() ? 'disabled' : '' }}">
+                <i class="add icon"></i>
+                เพิ่ม
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="ui grid">
+        <div class="sixteen wide column">
+          <table id="datatable" class="ui celled table striped selectable">
+            <thead>
+              <tr>
+                <th style="text-align: center !important">
+                  <div class="ui checkbox">
+                    <input type="checkbox" name="chk" id="chk" (click)="clickChkAll($event)">
+                    <label></label>
+                  </div>
+                </th>
+                <th style="text-align: center !important">ลำดับที่</th>
+                <th style="text-align: center !important">แบบสอบถามด้าน</th>
+                <th style="text-align: center !important">สร้างโดย</th>
+                <th style="text-align: center !important">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="datatable != undefined && datatable.length == 0">
+                <td class="center" colspan="5">ยังไม่มีข้อมูล</td>
+              </tr>
+              <tr *ngFor="let obj of datatable; let i = index" class="{{ obj.status === 'NEW' ? 'positive' : '' }}">
+                <td class="center">
+                  <div class="ui checkbox">
+                    <input type="checkbox" name="chk{{i}}" id="chk{{i}}" (click)="clickChk($event, i)">
+                    <label></label>
+                  </div>
+                </td>
+                <td class="center">{{i+1}}</td>
+                <td class="center">{{obj.qtnReportHdrName}}</td>
+                <td class="center">{{obj.createdBy}}</td>
+                <td class="center" *ngIf="obj.status === 'NEW'">-</td>
+                <td class="center" *ngIf="obj.status === undefined">
+                  <button *ngIf="obj.hasChild == 'FALSE'" class="ui mini green icon button" type="button" (click)="linkToDetail(obj.qtnReportHdrId)">
+                    <i class="plus icon"></i>
+                    รายการใหม่
+                  </button>
+                  <button *ngIf="obj.hasChild == 'TRUE'" class="ui mini yellow icon button" type="button" (click)="linkToDetail(obj.qtnReportHdrId)">
+                    <i class="edit icon"></i>
+                    แก้ไข
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="5">
+                  <pagination [step]="table.step" [class]="'right floated'" [active]="(table.start/5) + 1" [disabled]="chkDel.length !== 0"
+                    [pages]="table.recordsTotal" (length)="pageChange($event)">
+                  </pagination>
+                </th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="sixteen wide center aligned column">
+          <button class="ui primary {{ saving && 'loading' }} mini button {{!unsave && 'disabled'}} " type="button"
+            (click)="onSave()">
+            <i class="save icon"></i>
+            บันทึก
+          </button>
+          <button type="button" style="margin-left: auto;" class="ui mini {{ chk.length == 0 && 'disabled' }} red button"
+            (click)="onDelete()">
+            <i class="trash alternate icon"></i>
+            ลบ
+          </button>
+          <button type="button" (click)="setRL(0)" class="ui mini primary button">
+            <!-- {{rl && rlLen > 0 ? 'disabled' : ''}} -->
+            <i class="setting icon"></i>
+            กำหนดเงื่อนไขความเสี่ยง
+          </button>
+          <button type="button" style="margin-left: auto" (click)="onSaved()" class="ui mini green button {{(!finished && !rl && rlLen == 0)|| unsave || datatable == undefined || datatable.length == 0 ? 'disabled' : ''}} ">
+            <i class="paper plane icon"></i>
+            ส่งแบบสอบถาม
+          </button>
+          <button type="button" (click)="onCancel()" style="margin-left: auto" class="ui mini button">
+            <i class="remove icon"></i>
+            ยกเลิก
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sixteen wide column" *ngIf="toggleRL">
+    <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+      <span>กำหนดเงื่อนไขความเสี่ยงประเมินระบบการควบคุมภายใน</span>
+    </div>
+    <div class="ui attached segment">
+      <condition class="ui form" (has)="chkRL($event)" (out)="setRL($event)" [riskId]="qtnMasterId" [riskType]="RISK_TYPE"
+        [page]="PAGE"></condition>
+    </div>
+  </div>
+</div>
+
+<ui-modal [id]="'saved'" size="small" type="custom">
+  <div class="ui header">
+    หน่วยรับตรวจ
+  </div>
+  <div class="content">
+    <div class="ui centered grid">
+      <div class="fifteen wide column">
+        <div class="ui form" [formGroup]="formGroup">
+          <div class="inline fields">
+            <div class="two wide field">
+              <label class="full-width text-center">วันที่</label>
+            </div>
+            <div class="six wide field" [ngClass]="{'error': controlValid('from') }">
+              <div class="ui input">
+                <div class="ui calendar" id="fromCalendar">
+                  <div class="ui input left icon">
+                    <i class="calendar alter ante outline icon"></i>
+                    <input type="calendar" formControlName="from" readonly="" placeholder="วว/ดด/ปปปป" #from id="from" name="from"
+                      autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="two wide field">
+              <label class="full-width text-center">ถึง</label>
+            </div>
+            <div class="six wide field" [ngClass]="{'error': controlValid('to') }">
+              <div class="ui input">
+                <div class="ui calendar" id="toCalendar">
+                  <div class="ui input left icon">
+                    <i class="calendar alter ante outline icon"></i>
+                    <input type="calendar" formControlName="to" readonly="" placeholder="วว/ดด/ปปปป" #to id="to" name="to" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="two wide field">
+              <label class="full-width text-center">รอบที่ 1</label>
+            </div>
+            <div class="six wide field">
+              <div class="ui input" [ngClass]="{'disabled': !formGroup.get('chk1').value }">
+                <div class="ui calendar" id="r1Calendar">
+                  <div class="ui input left icon">
+                    <i class="calendar alter ante outline icon"></i>
+                    <input type="calendar" readonly="" formControlName="cal1" placeholder="วว/ดด/ปปปป" #r id="r1" name="r1" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="one wide field">
+              <div class="ui input" [ngClass]="{ 'disabled': noDateFromTo }">
+                <div class="ui checkbox">
+                  <input type="checkbox" name="chk1" id="chk1" (click)="toggleChk(1,$event)" formControlName="chk1" #chk>
+                  <label></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="two wide field">
+              <label class="full-width text-center">รอบที่ 2</label>
+            </div>
+            <div class="six wide field">
+              <div class="ui input" [ngClass]="{'disabled': !formGroup.get('chk2').value }">
+                <div class="ui calendar" id="r2Calendar">
+                  <div class="ui input left icon">
+                    <i class="calendar alter ante outline icon"></i>
+                    <input type="calendar" readonly="" formControlName="cal2" placeholder="วว/ดด/ปปปป" #r id="r2" name="r2" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="one wide field">
+              <div class="ui input" [ngClass]="{ 'disabled': noDateFromTo }">
+                <div class="ui checkbox">
+                  <input type="checkbox" name="chk2" id="chk2" (click)="toggleChk(2,$event)" formControlName="chk2" #chk>
+                  <label></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="two wide field">
+              <label class="full-width text-center">รอบที่ 3</label>
+            </div>
+            <div class="six wide field">
+              <div class="ui input" [ngClass]="{'disabled': !formGroup.get('chk3').value }">
+                <div class="ui calendar" id="r3Calendar">
+                  <div class="ui input left icon">
+                    <i class="calendar alter ante outline icon"></i>
+                    <input type="calendar" readonly="" formControlName="cal3" placeholder="วว/ดด/ปปปป" #r id="r3" name="r3" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="one wide field">
+              <div class="ui input" [ngClass]="{ 'disabled': noDateFromTo }">
+                <div class="ui checkbox">
+                  <input type="checkbox" name="chk3" id="chk3" (click)="toggleChk(3,$event)" formControlName="chk3" #chk>
+                  <label></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="inline field">
+            <label style="font-weight: thin !important"><b>หมายเหตุ: </b>กรุณาทำเครื่องหมายถูกที่หลังหากต้องการแก้ไข</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui sixteen wide grid">
+      <div class="center aligned column">
+        <div class="ui button" (click)="saveToFinish()" [ngClass]="{'positive': submitted && formGroup.valid}">
+          <i class="check icon"></i>
+          ยืนยัน
+        </div>
+        <div class="ui negative button">
+          <i class="remove icon"></i>
+          ยกเลิก
+        </div>
+      </div>
+    </div>
+  </div>
+</ui-modal>

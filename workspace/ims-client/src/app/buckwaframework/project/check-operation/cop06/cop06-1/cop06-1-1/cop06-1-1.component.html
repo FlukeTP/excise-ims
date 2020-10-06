@@ -1,0 +1,173 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<div class="ui grid">
+  <div class="sixteen wide column">
+    <h2 class="ui header">รายงานการตรวจปฏิบัติการการจ่ายวัตถุดิบ</h2>
+
+    <div class="ui top attached header segment" style="background: #1e83db;color: white">
+      <span>ระบุรายละเอียดรายงาน</span>
+    </div>
+
+    <form ngNativeValidate (submit)="onClickShow($event)">
+      <div class="ui attached segment">
+        <div class="ui form">
+
+          
+        <div class="inline fields">
+            <div class="three wide field ">
+              <label class="text-right full-width">ประจำปี</label>
+            </div>
+            <div class="four wide field column">
+              <div class="ui calendar" id="date" style="width: 100%;">
+                <div class="ui input left icon">
+                  <i class="calendar alter nate outline icon"></i>
+                  <input id="fiscalYear" type="text" name="date-raw" autocomplete="off" [attr.readonly]="null" placeholder="ปปปป" [attr.required]="true">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="inline fields  ui grid">
+            <div class="three wide field ">
+              <label class="text-right full-width">ทะเบียนสรรพสามิต</label>
+            </div>
+            <div class="four wide field" [ngClass]="{'error': error}">
+              <select class="ui search dropdown cop06-1-1" name="exciseId" id="exciseId" (change)="changeExiseId()" style="width: 100% !important">
+                <option *ngFor="let list of exciseIdArr">{{list}}</option>
+              </select>
+            </div>
+            <div class="three wide field ">
+              <label class="text-right full-width">ผู้ประกอบการ</label>
+            </div>
+            <div class="four wide field ">
+              <input type="text" class="custom-readonly" placeholder="ผู้ประกอบการ" [(ngModel)]="obj.companyName" name="companyName" id="companyName"
+                readonly="">
+            </div>
+          </div>
+
+          <div class="inline fields  ui grid">
+              <div class="three wide field ">
+                <label class="text-right full-width">ประเภท</label>
+              </div>
+              <div class="four wide field ">
+                  <input type="text" class="custom-readonly" placeholder="ประเภท"  name="exciseType" id="exciseType">
+              </div>
+              <div class="three wide field ">
+                <label class="text-right full-width">พิกัด</label>
+              </div>
+              <div class="four wide field ">
+                  <input type="text" class="custom-readonly" placeholder="พิกัด" [(ngModel)]="obj.productType" name="productType" id="productType"
+                  readonly="">
+              </div>
+            </div>
+
+            <div class="inline fields  ui grid">
+                <div class="three wide field ">
+                  <label class="text-right full-width">รอบระยะเวลาการตรวจสอบ</label>
+                </div>
+                <div class="four wide field ">
+                    <div class="ui calendar" id="calendarFront" style="width:100%">
+                      <div class="ui input left icon">
+                        <i class="calendar alter nate outline icon"></i>
+                        <input type="text" name="startDate" id="startDate" [(ngModel)]="obj.startDate" autocomplete="off" placeholder="ดด/ปปปป" [attr.required]="true">
+                      </div>
+                    </div>
+                </div>
+                <div class="three wide field ">
+                  <label class="text-right full-width">ถึง</label>
+                </div>
+                <div class="four wide field ">
+                    <div class="ui calendar" id="calendarLast" style="width:100%">
+                      <div class="ui input left icon">
+                        <i class="calendar alter nate outline icon"></i>
+                        <input type="text" name="endDate" id="endDate" autocomplete="off" [(ngModel)]="obj.endDate" [attr.readonly]="null" placeholder="ดด/ปปปป"
+                          [attr.required]="true">
+                      </div>
+                    </div>
+                </div>
+              </div>
+
+          <br>
+          <div class="ui center aligned grid">
+            <div class="six wide column">
+              <button class="ui mini primary button" type="submit">
+                <i class="file icon"></i>
+                แสดงข้อมูลรายงาน
+              </button>
+              <button class="ui mini button" type="reset">
+                  <i class="refresh icon"></i>
+                  ล้างข้อมูล
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <br>
+    <div id="showData">
+      <div class="ui top attached header segment" style="background: #1e83db;color: white">
+        <span>รายละเอียดข้อมูลรายงาน</span>
+      </div>
+      <div class="ui attached segment">
+
+        <div class="ui grid center aligned">
+          <div class="sixteen wide column">
+            รายงานการตรวจปฏิบัติการการจ่ายวัตถุดิบ
+            <br> {{obj.companyName}}
+            <br> เดือน {{startDate}} - {{endDate}}
+          </div>
+        </div>
+        <br>
+        <table id="showDt" class="ui small celled table striped selectable nowrap" style="width: 100%">
+          <thead>
+            <tr style="text-align: center;">
+              <th>ลำดับที่</th>
+              <th>รายการ</th>
+              <th>ใบเบิกวัตถุดิบ</th>
+              <th>บัญชีประจำวัน</th>
+              <th>งบเดือน</th>
+              <th>{{emptyColumn}}</th>
+              <th>ค่าสูงสุดของข้อมูล</th>
+              <th>ผลต่างของคู่ข้อมูล</th>
+            </tr>
+          </thead>
+        </table>
+        <br>
+        <div class="ui center aligned grid">
+          <div class="six wide column">
+            <button class="ui mini primary button" (click)="saveTable()" type="button">
+              <i class="print icon"></i>
+              บันทึกข้อมูล
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="ui top attached header segment" style="background: #1e83db;color: white">
+      <span>อัปโหลดไฟล์ ข้อมูลรายงาน</span>
+    </div>
+
+    <form id="upload-form" ngNativeValidate (submit)="onUpload($event)">
+      <div class="ui attached segment">
+        <div class="ui form">
+          <div class="inline fields">
+            <div class="three wide field ">
+              <label class="text-right full-width">ไฟล์อัปโหลด</label>
+            </div>
+            <div class="four wide field ">
+              <input class="inputfile" type="file" name="fileExel" id="fileExel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                (change)="onChangeUpload($event)" required>
+
+            </div>
+            <div class="three wide field">
+              <button class="ui mini primary button" type="submit">
+                <i class="upload icon"></i>
+                อัพโหลด
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

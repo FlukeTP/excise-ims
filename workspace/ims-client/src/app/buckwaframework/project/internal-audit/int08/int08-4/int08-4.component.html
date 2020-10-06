@@ -1,0 +1,99 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<br>
+<div class="sixteen wide column">
+  <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+    <span>การตรวจสอบใบเสร็จเสีย</span>
+  </div>
+  <div class="ui attached segment">
+    <div class="ui form">
+      <input type="hidden" id="searchFlag">
+      <input type="hidden" id="id">
+
+      <div class="inline fields">
+          <div class="three wide field"></div>
+          <div class="two wide required field">
+            <label>สำนักงานสรรพสามิตภาค</label>
+          </div>
+          <div class="three wide field">
+            <select class="ui dropdown ai selection" style="width: 100%;" id="sector">
+              <option value="1">ทั้งหมด</option>
+              <option *ngFor="let data of travelTo1AddList" value="{{data.value2}}">{{data.subTypeDescription}}</option>
+            </select>
+          </div>
+        </div>
+      <div class="inline fields">
+        <div class="three wide field"></div>
+        <div class="two wide required field">
+          <label>ระยะเวลาที่ตรวจสอบ (ปีปฏิทิน)</label>
+        </div>
+        <div class="three wide field ui calendar" id="calendar">
+          <div class="ui input left icon">
+            <i class="calendar alter nate outline icon"></i>
+            <input type="calendar" readonly="" id="startDate" name="startDate" [attr.required]="true" autocomplete="off" placeholder="ดด/ปปปป">
+          </div>
+        </div>
+        <div class="one wide field">
+          <label>ถึง</label>
+        </div>
+        <div class="three wide field ui calendar" id="calendar1">
+          <div class="ui input left icon">
+            <i class="calendar alter nate outline icon"></i>
+            <input type="calendar" readonly="" id="endDate" name="endDate" [attr.required]="true" autocomplete="off" placeholder="ดด/ปปปป">
+          </div>
+        </div>
+      </div>
+      <div class="inline fields">
+        <div class="three wide field"></div>
+        <div class="two wide required field">
+          <label>จำนวนใบเสร็จเสียเกิน</label>
+        </div>
+        <div class="one wide field">
+          <input id="billLost" type="number" min="0" max="100" [attr.step]="1" required>
+        </div>
+        <div class="one wide field ui right aligned">
+          <label>%</label>
+        </div>
+      </div>
+      <br>
+      <div class="ui center aligned grid">
+        <div class="eight wide column">
+          <button class="ui mini primary button" type="button" (click)="clickSearch()">
+            <i class="search icon"></i>วิเคราะห์ข้อมูลเบื้องต้น</button>
+        </div>
+      </div>
+      <br>
+    </div>
+  </div>
+  <br>
+  <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+    <span>ผลการค้นหา การตรวจสอบใบเสร็จเสีย</span>
+  </div>
+  <div class="ui attached  segment">
+
+    <table id="tableData" class="ui small celled table nowrap striped selectable" style="width: 100%">
+      <thead>
+        <tr>
+          <th style="text-align: center !important;"><input class="ui checkbox" type="checkbox" name="select-all" id="select-all" (click)="checkAll($event)"></th>
+          <th style="text-align: center !important;">ลำดับที่</th>
+          <th style="text-align: center !important;">ชื่อสำนักงานสรรพสามิต</th>
+          <th style="text-align: center !important;">ช่วงเดือนที่</th>
+          <th style="text-align: center !important;">ถึงเดือนที่</th>
+          <th style="text-align: center !important;">จำนวนใบเสร็จทั้งหมด</th>
+          <th style="text-align: center !important;">จำนวนใบเสร็จเสีย</th>
+          <th style="text-align: center !important;">รายละเอียดความเสี่ยง</th>
+        </tr>
+      </thead>
+    </table>
+    <br>
+    <div class="ui center aligned grid">
+      <div class="sixteen wide column">
+        <button class="ui mini primary button" (click)="saveData()">
+          <i class="check icon"></i>เลือกรายการ</button>
+          <button class="ui mini yellow button" (click)="exportFile2()">
+            <i class="print icon"></i>ส่งออกไฟล์ Excel</button>
+      </div>
+    </div>
+    <br>
+  </div>
+
+</div>

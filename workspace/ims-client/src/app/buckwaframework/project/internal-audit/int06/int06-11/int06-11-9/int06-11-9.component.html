@@ -1,0 +1,64 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<br>
+<div class="sixteen wide column">
+  <div class="ui top centered attached header segment" style="background: #1e83db;color: white;">
+    <span>ระบุเงื่อนไขในการค้นหา</span>
+  </div>
+  <form [formGroup]="searchForm" (submit)="handleSearch($event)">
+    <div class="ui form">
+      <div class="ui attached segment">
+        <div class="inline fields">
+          <div class="four wide field">
+          </div>
+          <div class="two wide field">
+            <label class="text-right full-width">ประเภทการขอเบิก</label>
+          </div>
+          <div class="five wide field">
+            <select class="ui dropdown ai search full-width" formControlName="withdrawRequest" id="withdrawRequest">
+              <option value="">กรุณาเลือก</option>
+              <option *ngFor="let wdr of withdrawRequestList | async;" [value]="wdr.lovId">
+                {{ wdr.typeDescription }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <br>
+        <div class="ui center aligned grid">
+          <div class="sixteen wide column">
+            <button class="ui mini primary button" type="submit">
+              <i class="search icon"></i>ค้นหา</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <br>
+  <div class="ui top centered attached header segment" style="background: #1e83db;color: white;">
+    <span>ผลการค้นหา</span>
+  </div>
+  <div class="ui form">
+    <div class="ui attached segment">
+      <table id="dataTable" class="ui small celled table aligned hover striped selectable nowrap" style="width:100%">
+        <thead>
+          <tr>
+            <th style="text-align: center !important;">เลขที่ทำการ</th>
+            <th style="text-align: center !important;">เลขที่ใบขอเบิก</th>
+            <th style="text-align: center !important;">ผู้สร้างใบขอเบิก</th>
+            <!-- <th style="text-align: center !important;">ตำแหน่ง</th>
+            <th style="text-align: center !important;">สังกัด</th> -->
+            <th style="text-align: center !important;">วันที่สร้างใบขอเบิก</th>
+            <th style="text-align: center !important;">จำนวนเงินที่ขอเบิก</th>
+            <th style="text-align: center !important;">ประเภทการขอเบิก</th>
+            <th style="text-align: center !important;">สถานะการดำเนินการ</th>
+            <th style="text-align: center !important;width:200px !important">จัดการ</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<form id="call">
+  <input type="hidden" id="nameCall" (click)="callBackData()">
+</form>

@@ -1,0 +1,136 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<!-- modal confirm -->
+<!-- <div class="ui modal confirm">
+    <i class="close icon" style="margin-top: -50px"></i>
+    <div class="header">
+        เลือกปลายทาง
+    </div>
+
+    <div class="actions">
+        <div class="ui grid">
+            <div class="sixteen wide center aligned column">
+                <div class="ui button primary" (click)="onSend('C')">ส่งให้ส่วนกลาง</div>
+                <div class="ui button primary" (click)="onSend('S')">ส่งให้ภาคพื่นที่</div>      
+            </div>                 
+        </div>       
+    </div>
+
+</div> -->
+
+<!-- form -->
+<div class="ui grid">
+    <div class="sixteen wide column">
+        <h2 class="ui header">เพิ่มข้อมูลภายนอก</h2>
+
+        <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+            <span>เพิ่มข้อมูลภายนอก</span>
+        </div>
+
+        <div class="ui attached segment">
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="ten wide field">
+                    </div>
+                    <div class="six wide field">
+                        <label class="custom-label-w-20">เลขที่วิเคราะห์ข้อมูล</label>
+                        <input value="{{analysNumber}}" readonly="" class="custom-readonly">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="thirteen wide field">
+                        <label class="custom-label-w-35">ระยะเวลาที่ตรวจสอบ</label>
+                        <div class="four ui action input">
+                            <input type="text" placeholder="ดด/ปปปป" value="{{before}}" readonly="" class="custom-readonly">
+                            <button class="ui icon button">
+                                <i class="add to calendar icon"></i>
+                            </button>
+                        </div>
+                        <div class="one">
+                            <label>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</label>
+                        </div>
+                        <div class="four ui action input">
+                            <input type="text" placeholder="ดด/ปปปป" value="{{last}}" readonly="" class="custom-readonly">
+                            <button class="ui icon button">
+                                <i class="add to calendar icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="eight wide field">&nbsp;&nbsp;&nbsp;
+                        <label class="custom-label-w-20">เลขที่กระดาษทำการ</label>
+                        <input readonly="" value="{{workSheetNumber}}" class="custom-readonly">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="fourteen wide field"></div>
+                    <div class="two wide field">
+                        <input type="hidden" id="exciseId" value="EX" />
+                        <button type="button" id="exciseBtn" style="margin-left: auto" class="ui mini primary button right floated"
+                            (click)="linkToDetail()">
+                            <i class="add icon"></i>
+                            เพิ่มข้อมูล
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="ui segment">
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="three wide field"></div>
+                    <div class="three wide field">
+                        <label style="width: 5em;">ภาค</label>
+                        <select class="ui dropdown ai" name="sector" id="sector" (change)="changeSector()">
+                            <option value="">ทั้งหมด</option>
+                            <option *ngFor="let list of sectorArr">{{list.value1}}</option>
+                        </select>
+                    </div>
+                    <div class="three wide field">
+                        <label style="width: 5em;">พิกัด</label>
+                        <select class="ui dropdown ai" name="coordinates" id="coordinates" (change)="changeCoordinates()">
+                            <option value="">ทั้งหมด</option>
+                            <option *ngFor="let list of coordinatesArr">{{list.value1}}</option>
+                        </select>
+                    </div>
+                    <div class="three wide field">
+                        <button class="ui gray button" (click)="onClear()"><i class="undo icon"></i>ข้อมูลทั้งหมด</button>
+                    </div>
+                </div>
+            </div>
+
+            <form ngNativeValidate (submit)="onSend('C')">
+                <div class="ui grid">
+                    <div class="sixteen wide column">
+                        <div>
+                            <table id="sendLineUser" class="ui small celled table aligned hover striped selectable nowrap"
+                                style="width: 100%;">
+                                <thead id="trDrinamic">
+                                    <!-- table -->
+
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="ui center aligned grid">
+                    <div class="sixteen wide column">
+                        <button type="submit" class="ui mini primary button">
+                            <i class="save icon"></i>
+                            ส่งข้อมูลให้ส่วนกลาง
+                        </button>
+                        <button type="button" class="ui mini button" routerLink="/add-external-data">
+                            <i class="refresh icon"></i>
+                            ล้างข้อมูล
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

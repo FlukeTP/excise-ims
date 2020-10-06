@@ -1,0 +1,77 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+
+<div class="ui grid">
+
+  <!-- form 1 -->
+  <div class="sixteen wide column">
+    <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+      <span>กำหนดปัจจัยเสี่ยงประเมินความเสี่ยงสำนักงานสรรพสามิตภาคพื้นที่</span>
+    </div>
+    <div class="ui attached segment">
+      <div class="ui form">
+        <div class="inline fields">
+          <div class="four wide field "></div>
+          <div class="two wide field ">
+            <label class="text-right full-width">ปัจจัยเสี่ยง</label>
+          </div>
+          <div class="four wide field ">
+            <input type="text" placeholder="ปัจจัยเสี่ยง" class="custom" name="riskHdrName" id="riskHdrName" [(ngModel)]="riskHdrName">
+          </div>
+          <div class="four wide field ">
+            <button class="ui mini green button" (click)="addRiskAssRiskWsHdr()">
+              <i class="add icon"></i>
+              เพิ่ม
+            </button>
+          </div>
+        </div>
+        <!-- table -->
+        <table id="dataTable" class="ui small celled table striped selectable" style="width: 100%;">
+          <thead>
+            <tr>
+              <th style="text-align: center !important">ลำดับที่</th>
+              <th style="text-align: center !important">ชื่อกระดาษทำการ</th>
+              <th style="text-align: center !important">ปีงบประมาณ</th>
+              <th style="text-align: center !important">วันที่สร้าง</th>
+              <th style="text-align: center !important">ผู้สร้าง</th>
+              <th style="text-align: center !important">สถานะการใช้งาน</th>
+              <th style="text-align: center !important">จัดการ</th>
+            </tr>
+          </thead>
+        </table>
+        <div class="inline fields"></div>
+        <div class="inline fields ">
+          <div class="sixteen wide field ">
+            <div class="five wide field "></div>
+            <button class="ui mini primary button" (click)="addRiskAssRiskWsHdr()">
+              <i class="save icon"></i>
+              บันทึก
+            </button>
+            <button class="ui mini primary button" (click)="configAllCondition()">
+              <i class="setting icon"></i>
+              กำหนดเงื่อนไขปัจจัยเสี่ยงรวม
+            </button>
+            <button class="ui mini primary button" (click)="openConditioinRL()">
+              <i class="setting icon"></i>
+              กำหนดเงื่อนไขปัจจัยเสี่ยงผลการปราบปราม
+            </button>
+            <button class="ui mini  button" (click)="cancelFlow()">
+              <i class="remove icon"></i>
+              ยกเลิก
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sixteen wide column" *ngIf="isConditionShow">
+    <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+      <span>กำหนดเงื่อนไขความเสี่ยง ปัจจัยเสี่ยงความถี่การเข้าตรวจสอบ</span>
+    </div>
+    <div class="ui attached segment">
+      <div class="ui form">
+        <condition [riskId]="budgetYear" [riskType]="'MAIN'" [page]="'int08-3-13'" (out)="closeConditionRL($event)"></condition>
+      </div>
+      <br />
+    </div>
+  </div>
+</div>

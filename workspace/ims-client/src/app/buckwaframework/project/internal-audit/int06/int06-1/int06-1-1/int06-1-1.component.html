@@ -1,0 +1,151 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+
+<div class="ui ordered steps full-width">
+    <div class="active step">
+      <div class="content">
+        <div class="title">งบทดลอง</div>
+        <div class="description">กำลังดำเนินการ</div>
+      </div>
+    </div>
+    <div class="disabled step">
+      <div class="content">
+        <div class="title">บัญชีแยกประเภท</div>
+        <div class="description">รอดำเนินการ</div>
+      </div>
+    </div>
+    <div class="disabled  step">
+      <div class="content">
+        <div class="title">ตรวจสอบค่าใช้จ่าย</div>
+        <div class="description">รอดำเนินการ</div>
+      </div>
+    </div>
+  </div>
+<div class="ui grid">
+    <div class="sixteen wide column">
+        <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+            <span>อัพโหลดไฟล์ตรวจสอบค่าใช้จ่าย</span>
+        </div>
+        <!-- form upload -->
+        <div class="ui attached center {{loading ? 'loading' : ''}} segment">
+            <form class="ui form" id="upload-form" (submit)="onSubmit($event)" ngNativeValidate>
+                <input type="hidden" id="searchFlag" name="searchFlag">
+                <div class="inline fields ui centered grid">
+                    <div class="one wide field "></div>
+                    <div class="three wide field required">
+                        <label class="text-right full-width">รายงานงบทดลอง</label>
+                    </div>
+                    <div class="six wide field ">
+                        <input class="inputfile" type="file" name="fileName" id="fileName" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                            (change)="onChangeUpload($event)" required>
+                    </div>
+                    <div class="three wide field "></div>
+                </div><br>
+                <div class="ui stackable center aligned page grid">
+                    <button class="ui mini yellow button" type="submit"><i class="upload icon"></i> อัปโหลด</button>
+                    <button class="ui mini gray button" type="button" (click)="claer()"><i class="sync icon"></i> ล้างข้อมูล</button>
+                    <button class="ui mini primary button" routerLink="/int06/1/1-2" type="button" [disabled]="show"><i class="share icon"></i>ถัดไป</button>
+                </div><br>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--table-->
+<div class="ui grid">
+    <div class="sixteen wide column">
+        <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+            <span>ข้อมูลการอัปโหลด</span>
+        </div>
+        <!-- form upload -->
+        <div class="ui attached center segment {{tableLoading ? 'loading' : ''}} ">
+            <table id="dataTable" class="ui small celled table nowrap striped selectable" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th style="text-align: center !important;" rowspan="2">ลำดับที่</th>
+                        <th style="text-align: center !important;" colspan="2">บัญชีแยกประเภท</th>
+                        <th style="text-align: center !important;" rowspan="2">ยอดยกมา</th>
+                        <th style="text-align: center !important;" rowspan="2">เดบิต</th>
+                        <th style="text-align: center !important;" rowspan="2">เครดิต</th>
+                        <th style="text-align: center !important;" rowspan="2">ยอดยกไป</th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: center !important">เลขที่บัญชีแยกประเภท</th>
+                        <th style="text-align: center !important">ชื่อบัญชีแยกประเภท</th>
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- table -->
+
+<!-- edie Model -->
+<div class="ui modal" id="edit-modal">
+    <i class="close icon"></i>
+    <div class="header">
+        <i class="edit outline icon"></i>แก้ไข
+    </div>
+    <div class="content">
+        <div class="description">
+            <form class="ui form">
+                <input type="hidden" name="columId" id="columId">
+                <!-- row 1 -->
+                <div class="inline fields  ui grid">
+                    <div class="one wide field "></div>
+                    <div class="three wide field ">
+                        <label class="text-right full-width">เลขที่บัญชีแยกประเภท</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" name="accountNumber" id="accountNumber">
+                    </div>
+                    <div class="three wide field ">
+                        <label class="text-right full-width">ชื่อบัญชีแยกประเภท</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="text" name="accountName" id="accountName">
+                    </div>
+                    <div class="one wide field "></div>
+                </div>
+                <!-- row 2 -->
+                <div class="inline fields  ui grid">
+                    <div class="one wide field "></div>
+                    <div class="three wide field ">
+                        <label class="text-right full-width">ยอดยกมา</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="number" name="monryComes" id="monryComes">
+                    </div>
+                    <div class="three wide field ">
+                        <label class="text-right full-width">ยอดยกไป</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="number" name="moneyGoes" id="moneyGoes">
+                    </div>
+                    <div class="one wide field "></div>
+                </div>
+                <!-- row 3 -->
+                <div class="inline fields  ui grid">
+                    <div class="one wide field "></div>
+                    <div class="three wide field ">
+                        <label class="text-right full-width">เดบิต</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="number" name="debit" id="debit">
+                    </div>
+                    <div class="three wide field ">
+                        <label class="text-right full-width">เครดิต</label>
+                    </div>
+                    <div class="four wide field ">
+                        <input type="number" name="credit" id="credit">
+                    </div>
+                    <div class="one wide field "></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui primary button" (click)="edit()">บันทึก</div>
+        <div class="ui gray deny button">ยกเลิก</div>
+    </div>
+</div>

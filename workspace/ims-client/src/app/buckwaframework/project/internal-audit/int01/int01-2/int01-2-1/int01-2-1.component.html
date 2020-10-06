@@ -1,0 +1,84 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<div class="ui grid">
+  <div class="sixteen wide column">
+
+    <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+      <span> ตรวจสอบใบอนุญาตสุรา ยาสูบ ไพ่</span>
+    </div>
+
+    <div class="ui bottom attached segment">
+      <div class="ui form">
+        <div class="inline fields">
+          <div class="three wide field">
+            <label class="text-right full-width">สำนักงานสรรพสามิตภาค</label>
+          </div>
+          <div class="five wide field">
+            <select class="ui dropdown search selection" style="width: 100%;" id="travelTo1" (change)="travelTo2Dropdown($event)" [(ngModel)]="code1">
+              <option value="">กรุณาเลือก</option>
+              <option *ngFor="let data of travelTo1List" value="{{data.lovId}}">{{data.subTypeDescription}}</option>
+            </select>
+
+          </div>
+          <div class="two wide field">
+            <label class="text-right full-width">สำนักงานสรรพสามิตพื้นที่</label>
+          </div>
+          <div class="five wide field">
+            <select class="ui dropdown search selection" style="width: 100%;" id="travelTo2" (change)="travelTo3Dropdown($event)" [(ngModel)]="code2">
+              <option value="">กรุณาเลือก</option>
+              <option *ngFor="let data of travelTo2List" value="{{data.lovId}}">{{data.subTypeDescription}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="inline fields">
+          <div class="three wide field">
+            <label class="text-right full-width">สำนักงานสรรพสามิตพื้นที่สาขา</label>
+          </div>
+          <div class="five wide field">
+            <select class="ui dropdown search selection" style="width: 100%;" id="travelTo3" [(ngModel)]="code3">
+              <option value="">กรุณาเลือก</option>
+              <option *ngFor="let data of travelTo3List" value="{{data.lovId}}">{{data.subTypeDescription}}</option>
+            </select>
+          </div>
+          <div class="two wide field ">
+            <label class="text-right full-width">วันที่
+            </label>
+          </div>
+          <div class="two wide field">
+            <div class="ui calendar full-width" id="calendar1" style="width:100%">
+              <div class="ui input left icon">
+                <i class="calendar alter nate outline icon"></i>
+                <input type="text" placeholder="วว/ดด/ปปปป" name="startDate" id="startDate" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="one wide field">
+            <label class="text-center full-width">ถึง</label>
+          </div>
+          <div class="two wide field">
+            <div class="ui calendar full-width" id="calendar2" style="width:100%">
+              <div class="ui input left icon">
+                <i class="calendar alter nate outline icon"></i>
+                <input type="text" placeholder="วว/ดด/ปปปป" name="endDate" id="endDate" readonly>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="ui center aligned grid">
+          <div class="eight wide column">
+            <button class="ui mini primary button width-100" (click)="searchWs()">
+              <i class="search icon"></i>
+              ค้นหา
+            </button>
+            <button class="ui mini button" type="reset" (click)="reset()">
+              <i class="refresh icon"></i>
+              ล้างข้อมูล
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

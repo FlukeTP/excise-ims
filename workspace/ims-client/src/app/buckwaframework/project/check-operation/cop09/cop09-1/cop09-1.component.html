@@ -1,0 +1,121 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<br>
+<div class="sixteen wide column">
+  <h2 class="ui header">ตรวจสอบข้อมูล</h2>
+
+  <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+    <span>ระบุเงื่อนไขในการค้นหา</span>
+  </div>
+  <div class="ui form center aligned" id="COP09-1" ngNativeValidate>
+    <div class="ui attached  segment">
+      <input type="hidden" id="searchFlag">
+      <input type="hidden" id="id">
+
+      <div class="inline fields">
+
+        <div class="three wide field"></div>
+        <div class="three wide field">
+          <label>สรุปแผนการตรวจปฏิบัติการประจำปี</label>
+        </div>
+        <div class="four wide field column">
+          <div class="ui calendar" id="date" style="width: 100%;">
+            <div class="ui input left icon">
+              <i class="calendar alter nate outline icon"></i>
+              <input id="fiscalYear" type="text" name="date-raw" autocomplete="off" [attr.readonly]="null" placeholder="ปปปป"
+                [attr.required]="true">
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="ui center aligned grid">
+        <div class="eight wide column">
+          <button class="ui mini primary button" type="button" (click)="clickSearch()">
+            <i class="search icon"></i>ค้นหา</button>
+        </div>
+      </div>
+      <br>
+    </div>
+  </div>
+  <br>
+  <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+    <span>รายละเอียดตามแผนปฏิบัติการ</span>
+  </div>
+  <div class="ui attached  segment">
+
+    <table id="tableData" class="ui small celled table nowrap striped selectable" style="width: 100%">
+      <thead>
+
+        <tr>
+          <th style="text-align: center !important;"></th>
+          <th style="text-align: center !important;">ลำดับ</th>
+          <th style="text-align: center !important;">เลขที่ผู้ประกอบการ</th>
+          <th style="text-align: center !important;">ชื่อผู้ประกอบการ</th>
+          <th style="text-align: center !important;">สถานที่ตั้งของผู้ประกอบการ</th>
+          <th style="text-align: center !important;">วันที่ตรวจ</th>
+          <th style="text-align: center !important;">แผนปฏิบัติการ</th>
+          <th style="text-align: center !important;">สถานะ</th>
+        </tr>
+
+      </thead>
+    </table>
+
+  </div>
+  <br>
+  <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+    <span>รายละเอียดนอกแผนปฏิบัติการ</span>
+  </div>
+  <div class="ui attached  segment">
+    <div class="ui form center aligned" ngNativeValidate>
+
+      <br>
+      <table id="tableData2" class="ui small celled table nowrap striped selectable" style="width: 100%">
+        <thead>
+
+          <tr>
+            <th style="text-align: center !important;"></th>
+            <th style="text-align: center !important;">ลำดับ</th>
+            <th style="text-align: center !important;">เลขที่ผู้ประกอบการ</th>
+            <th style="text-align: center !important;">ชื่อผู้ประกอบการ</th>
+            <th style="text-align: center !important;">สถานที่ตั้งของผู้ประกอบการ</th>
+            <th style="text-align: center !important;">วันที่ตรวจ</th>
+            <th style="text-align: center !important;">แผนปฏิบัติการ</th>
+            <th style="text-align: center !important;">สถานะ</th>
+          </tr>
+
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="ui small modal transition hidden" id='modalTsl'>
+  <div class="header" style="text-align: center !important;background: #1e83db;color: white;">
+    เลือกเดือนที่ต้องการตรวจสอบข้อมูล
+  </div>
+  <div class="content">
+    <div class="ui calendar full-width" id="dateModal" style="text-align: center;">
+      <div class="ui input left icon">
+        <i class="clock icon"></i>
+        <input id="dateM" name="dateM" type="text" autocomplete="off" [attr.readonly]="null" placeholder="ดด/ปปปป"
+          [attr.required]="true">
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="ui mini yellow button" type="button" (click)="onClickOK()">
+      <i class="edit icon"></i>ตรวจสอบ</button>
+    <button class="ui mini deny button" type="button">
+      <i class="close icon"></i>ยกเลิก</button>
+  </div>
+</div>
+
+
+<!-- End Modal -->
+
+<!-- onReport -->
+<form id="onReport" method="POST">
+  <input type="hidden" name="dataJson" id="dataJson">
+</form>
+<!-- onReport -->

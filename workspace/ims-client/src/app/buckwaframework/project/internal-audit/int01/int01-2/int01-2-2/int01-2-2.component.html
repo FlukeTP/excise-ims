@@ -1,0 +1,204 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+
+<!-- content -->
+<div class="ui grid">
+
+    <div class="sixteen wide column">
+        <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+            <span>ตรวจสอบใบอนุญาต</span>
+        </div>
+
+        <!-- form add print no -->
+        <div class="ui bottom attached segment">
+            <div class="ui centered grid">
+                <div class="fourteen wide column">
+                    <form class="ui form" (submit)="addPrint($event)" #f="ngForm">
+                        <div class="inline fields">
+                            <div class="two wide  field">
+                                <label class="text-right full-width">เลขที่ใบอนุญาต : </label>
+                            </div>
+                            <div class="three wide  field">
+                                <input type="text" [(ngModel)]="lic.licNo">
+                            </div>
+                            <div class="two wide  field">
+                                <label class="text-right full-width">เลขที่แบบพิมพ์ : </label>
+                            </div>
+                            <div class="three wide  field">
+                                <input type="text" [(ngModel)]="lic.printCode">
+                            </div>
+                            <div class="two wide  field">
+                                <label class="text-right full-width">จำนวนเงิน : </label>
+                            </div>
+                            <div class="three wide  field">
+                                <input type="number" [(ngModel)]="lic.licAmount">
+                            </div>
+                            <div class="one wide  field">
+                                <button class="ui mini primary button width-100" (click)="editDataInlist()">
+                                    <i class="add icon"></i>
+                                    เพิ่ม
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- form add print no -->
+        <div class="ui {{ (loading | async) ? 'loading' : '' }} top attached segment">
+            <div class="ui grid">
+                <div class="sixteen wide column">
+                    <table id="dataTable" class="ui small celled table striped selectable" style="width: 100%;">
+                        <thead>
+                            <tr class="center aligned">
+                                <th style="text-align: center;">ลำดับที่</th>
+                                <th style="text-align: center;">วันที่ออกใบอนุญาต</th>
+                                <th style="text-align: center;">วันที่นำส่งเงิน
+                                    <br>(ระบบรายได้)</th>
+                                <th style="text-align: center;">ประเภทใบอนุญาต</th>
+                                <th style="text-align: center;">เลขที่แบบพิมพ์</th>
+                                <th style="text-align: center;">เลขที่ใบอนุญาต</th>
+                                <th style="text-align: center;">จำนวนเงินจากระบบ</th>
+                                <th style="text-align: center;">จำนวนเงินจากสำเนาใบอนุญาต</th>
+                                <th style="text-align: center;">จำนวนเงินค่าธรรมเนียม
+                                    <br>อปท. 10%</th>
+                                <th style="text-align: center;">จำนวนเงินค่ามหาดไทย
+                                    <br>10%</th>
+                                <th style="text-align: center;">รวม</th>
+                                <th style="text-align: center;">วันที่ใบอนุญาตมีผล</th>
+                                <th style="text-align: center;">วันที่หมดอายุใบอนุญาต</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="sixteen wide center aligned column">
+                    <a id="btnSave" class="ui mini primary button widtd-100" (click)="saveAllData()">
+                        <i class="save icon"></i>
+                        บันทึก
+                    </a>
+                    <a class="ui mini primary button widtd-100" (click)="nextPage()">
+                        <i class="file alternate icon"></i>
+                        สรุปการใช้ใบอนุญาต
+                    </a>
+                    <a class="ui mini yellow button widtd-100">
+                        <i class="print icon"></i>
+                        ส่งออก
+                    </a>
+                    <a class="ui mini  button widtd-100" routerLink='/int01/2/1'>
+                        <i class="close icon"></i>ยกเลิก
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="modalInt062" class="ui modal hidden transition">
+    <i class="close icon"></i>
+    <div class="header">
+        แก้ไขข้อมูลใบเสร็จรับเงิน
+    </div>
+    <br>
+
+    <div class="content">
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="eight wide field">
+                    <label class="custom-label-w-15">วันที่รับเงิน</label>
+                    <input type="text" value="02/10/60" />
+                </div>
+                <div class="eight wide field">
+                    <label class="custom-label-w-15">เลขที่ใบอนุญาต</label>
+                    <input type="text" value="" />
+                </div>
+            </div>
+            <div class="inline fields">
+                <div class="eight wide field">
+                </div>
+                <div class="eight wide field">
+                    <label class="custom-label-w-15">เลขที่ใบอนุญาต</label>
+                    <input type="text" value="" />
+                </div>
+            </div>
+
+            <div class="inline fields">
+                <div class="eight wide field">
+                    <label class="custom-label-w-15">วันที่นำฝากบัญชี</label>
+                    <input type="text" value="02/10/60" />
+                </div>
+                <div class="eight wide field">
+                    <label class="custom-label-w-15">จำนวนเงิน</label>
+                    <input type="text" value="" />
+                </div>
+            </div>
+            <div class="inline fields">
+                <div class="eight wide field ">
+                    <label class="custom-label-w-15">ประเภทใบอนุญาต</label>
+                    <select id="idint" class="ui dropdown ai">
+                        <option value="0">สุราป4</option>
+                        <option value="1">สุราป3</option>
+                    </select>
+                </div>
+                <div class="eight wide field">
+                    <label class="custom-label-w-15">10%</label>
+                    <input type="text" value="" readonly="" />
+                </div>
+            </div>
+
+            <div class="inline fields">
+                <div class="eight wide field">
+                    <label class="custom-label-w-15">แบบพิมพ์สรรพสามิต
+                    </label>
+                    <input type="text" value="" readonly="" class="custom-readonly" />
+                </div>
+                <div class="eight wide field">
+                    <label class="custom-label-w-15">97%
+                    </label>
+                    <input type="text" value="" />
+                </div>
+            </div>
+            <div class="inline fields">
+                <div class="eight wide field ">
+                    <label class="custom-label-w-15">เขต</label>
+                    <select id="id" class="ui dropdown ai">
+                        <option value="0">นอก</option>
+                        <option value="1">ใน</option>
+                    </select>
+                </div>
+                <div class="eight wide field">
+                    <label class="custom-label-w-15">3%</label>
+                    <input type="text" value="" />
+                </div>
+            </div>
+
+            <div class="inline fields">
+                <div class="eight wide field">
+                    <label class="custom-label-w-15">เลขแบบพิมพ์</label>
+                    <input type="text" value="" />
+                </div>
+                <div class="eight wide field">
+                    <label class="custom-label-w-15">รวม</label>
+                    <input type="text" value="200.00" readonly="" class="custom-readonly" />
+                </div>
+            </div>
+
+            <br>
+
+        </div>
+        <div class="actions">
+            <div class="ui center aligned grid">
+                <div class="six wide column">
+                    <button class="ui mini primary button " (click)="saveAllData()">
+                        <i class="save icon"></i>
+                        บันทึก
+                    </button>
+                    <button class="ui mini button " (click)="closePopupEdit()">
+                        <i class="close icon"></i>
+                        ยกเลิก
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

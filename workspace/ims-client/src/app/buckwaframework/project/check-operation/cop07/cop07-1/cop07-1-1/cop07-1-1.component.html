@@ -1,0 +1,195 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<br>
+
+<div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+  <span>รายละเอียดแผนปฏิบัติการ</span>
+</div>
+
+<div class="ui attached  segment">
+  <br>
+  <div class="inline fields" style="text-align: center !important;">แผนปฏิบัติการ เดือน &nbsp; {{fiscalYearText}}</div>
+  <div class="inline fields" style="text-align: center !important;">ตามแผนปฏิบัติการ &nbsp; {{asPlanNumber}} &nbsp; ราย</div>
+  <div class="inline fields" style="text-align: center !important;">นอกแผนปฏิบัติการ &nbsp; {{outsidePlanNumber}} &nbsp; ราย</div>
+  <br>
+  <div class="inline fields" style="text-align: center !important;">
+    <!-- <button class="mini ui yellow button">
+      <i class="edit icon"></i>แก้ไขจำนวนแผนปฏิบัติการ</button> -->
+    <button class="ui mini green button" type="button" (click)="modalAdd()"  *ngIf="!btnAddDisabled">
+      <i class="plus icon"></i>เพิ่มข้อมูล</button>
+  </div>
+</div>
+<br>
+<div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+  <span>รายละเอียดตามแผนปฏิบัติการ</span>
+</div>
+  <div class="ui attached  segment">
+
+    <table id="tableData" class="ui small celled table nowrap striped selectable" style="width: 100%">
+      <thead>
+
+        <tr>
+          <th style="text-align: center !important;">ลำดับที่</th>
+          <th style="text-align: center !important;">เลขที่ผู้ประกอบการ</th>
+          <th style="text-align: center !important;">ชื่อผู้ประกอบการ</th>
+          <th style="text-align: center !important;">สถานที่ตั้งของผู้ประกอบการ</th>
+          <th style="text-align: center !important;">วันที่ตรวจ</th>
+          <th style="text-align: center !important;">แผนปฏิบัติการ</th>
+          <th style="text-align: center !important;">ประเภทการตรวจ</th>
+          <th style="text-align: center !important;">สถานะ</th>
+          <th style="text-align: center !important;width:180px !important">จัดการ</th>
+        </tr>
+
+      </thead>
+    </table>
+
+  </div>
+  <br>
+  <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+    <span>รายละเอียดนอกแผนปฏิบัติการ</span>
+  </div>
+  <div class="ui attached  segment">
+    <div class="ui form center aligned" ngNativeValidate>
+
+      <br>
+      <table id="tableData2" class="ui small celled table nowrap striped selectable" style="width: 100%">
+        <thead>
+
+          <tr>
+            <th style="text-align: center !important;">ลำดับที่</th>
+            <th style="text-align: center !important;">เลขที่ผู้ประกอบการ</th>
+            <th style="text-align: center !important;">ชื่อผู้ประกอบการ</th>
+            <th style="text-align: center !important;">สถานที่ตั้งของผู้ประกอบการ</th>
+            <th style="text-align: center !important;">วันที่ตรวจ</th>
+            <th style="text-align: center !important;">แผนปฏิบัติการ</th>
+            <th style="text-align: center !important;">ประเภทการตรวจ</th>
+            <th style="text-align: center !important;">สถานะ</th>
+            <th style="text-align: center !important;width:180px !important">จัดการ</th>
+          </tr>
+
+        </thead>
+      </table>
+    </div>
+    <div class="ui form center aligned grid">
+      <button class="ui mini button" type="button" (click)="clickBack()">
+        <i class="arrow left icon"></i>กลับ
+      </button>
+    </div>
+    <br>
+    <br>
+  </div>
+  <!-- add modal -->
+  <div class="ui large modal  transition hidden" id='modalAdd'>
+    <div class="header" style="text-align: center !important;background: #1e83db;color: white">
+      ระบุรายละเอียดเดือน&nbsp; {{fiscalYearText}}
+    </div>
+
+    <div class="content">
+      <form id="addModal-form" ngNativeValidate>
+        <div class="ui form center aligned">
+
+          <input type="hidden" id="id">
+          <input type="hidden" id="idMaster">
+          <input type="hidden" id="fiscalyear">
+
+
+          <div class="inline fields">
+            <div class="one wide field"></div>
+            <div class="three wide field">
+                <label>สำนักงานสรรพสามิตภาค</label>
+              </div>
+              <div class="four wide field">
+                <select class="ui dropdown ai search selection" style="width: 100%;" id="travelTo1Add" (change)="travelTo2AddDropdown($event)">
+                  <option value="">กรุณาเลือก</option>
+                  <option *ngFor="let data of travelTo1AddList" value="{{data.lovId}}">{{data.subTypeDescription}}</option>
+                </select>
+              </div>
+              <div class="three wide field">
+                <label>สำนักงานสรรพสามิตพื้นที่</label>
+              </div>
+              <div class="four wide field">
+                <select class="ui dropdown ai search selection" style="width: 100%;" id="travelTo2Add" (change)="setTravelToAdd($event)">
+                  <option value="">กรุณาเลือก</option>
+                  <option *ngFor="let data of travelTo2AddList" value="{{data.lovId}}">{{data.subTypeDescription}}</option>
+                </select>
+              </div>
+          </div>
+
+
+          <div class="inline fields">
+            <div class="one wide field"></div>
+            <div class="three wide field right aligned">
+              <label>เลขที่ผู้ประกอบการ</label>
+            </div>
+            <div class="four wide field">
+              <select class="ui dropdown ai search full-width office" id="entrepreneurNo" name="entrepreneurNo" autocomplete="off" style="width: 100%" (change)="changeExciseId($event)">
+                <option value="">กรุณาเลือก</option>
+                <option *ngFor="let data of entrepreneurNoList">{{data}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="inline fields">
+              <div class="one wide field"></div>
+              <div class="three wide field ui right aligned">
+                <label>ผู้ประกอบการ</label>
+              </div>
+              <div class="eleven wide field">
+                <div class="ui input left icon">
+                  <input class="custom-readonly" type="text" id="exciseName" value="{{exciseName}}" readonly >
+                </div>
+              </div>
+  
+            </div>
+
+          <div class="inline fields">
+            <div class="one wide field"></div>
+            <div class="three wide field right aligned">
+              <label>วันที่ออกตรวจปฏิบัติการ</label>
+            </div>
+            <div class="four wide field">
+              <div class="ui calendar" id="modalDate1" style="width: 100%">
+                <div class="ui input left icon">
+                  <i class="calendar alter nate outline icon"></i>
+                  <input type="text" name="date-raw" id="checkDate" autocomplete="off" [attr.readonly]="null" placeholder="วว/ดด/ปปปป" [attr.required]="true">
+                </div>
+              </div>
+            </div>
+
+            <div class="three wide field ui right aligned">
+              <label>แผนปฏิบัติการ</label>
+            </div>
+            <div class="four wide field">
+              <select class="ui dropdown ai" id="actionPlan" name="actionPlan" autocomplete="off" style="width: 100%">
+                <option value="">กรุณาเลือก</option>
+                <option *ngFor="let data of actionPlanList" value="{{data.lovId}}">{{data.subTypeDescription}}</option>
+              </select>
+            </div>
+
+          </div>
+          <div class="inline fields">
+              <div class="one wide field"></div>
+              <div class="three wide field right aligned">
+                <label>ประเภทการตรวจสอบ</label>
+              </div>
+              <div class="four wide field">
+                <select class="ui dropdown ai search full-width office" id="checkType" name="checkType" autocomplete="off" style="width: 100%" >
+                  <option value="">กรุณาเลือก</option>
+                  <option *ngFor="let data of checkTypeList" value="{{data.lovId}}">{{data.subTypeDescription}}</option>
+                </select>
+              </div>
+            </div>
+
+          <br>
+        </div>
+      </form>
+    </div>
+
+    <div class="actions">
+      <div class="ui mini primary button" *ngIf=" btnModal=='S' " (click)="saveData()">
+        <i class="save icon"></i>บันทึก</div>
+      <div class="ui mini deny button">
+        <i class="close icon"></i>ยกเลิก</div>
+      <div class="ui mini yellow button" *ngIf=" btnModal=='E' " (click)="editData()">
+        <i class="edit icon"></i>ดำเนินการแก้ไข</div>
+    </div>
+  </div>
+  <!--End add modal -->

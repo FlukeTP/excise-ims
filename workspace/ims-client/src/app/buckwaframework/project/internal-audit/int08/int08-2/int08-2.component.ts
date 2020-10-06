@@ -1,0 +1,54 @@
+import { Component, OnInit } from "@angular/core";
+import { AuthService } from "services/auth.service";
+
+declare var $: any;
+@Component({
+  selector: "int08-2",
+  templateUrl: "./int08-2.component.html",
+  styleUrls: ["./int08-2.component.css"]
+})
+export class Int082Component implements OnInit {
+  showData: boolean = false;
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.reRenderVersionProgram('INT-08200');
+    $(".ui.dropdown").dropdown();
+    $(".ui.dropdown.ai").css("width", "100%");
+  }
+
+  ngAfterViewInit() {
+    $("#select1").hide();
+    $("#select2").hide();
+    $("#select3").hide();
+    $("#selectCondition1").dropdown();
+    $("#selectCondition2").dropdown();
+    $("#selectCondition3").dropdown();
+    $("#selectColor1").dropdown();
+    $("#selectColor2").dropdown();
+    $("#selectColor3").dropdown();
+  }
+
+  uploadData() {
+    this.showData = true;
+  }
+
+  clearData() {
+    this.showData = false;
+  }
+
+  popupEditData() {
+    $("#select1").show();
+    $("#select2").show();
+    $("#select3").show();
+    $("#modalInt082").modal("show");
+  }
+
+  closePopupEdit() {
+    $("#select1").hide();
+    $("#select2").hide();
+    $("#select3").hide();
+    $("#modalInt082").modal("hide");
+  }
+}

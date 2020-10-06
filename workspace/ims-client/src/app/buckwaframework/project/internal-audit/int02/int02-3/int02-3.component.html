@@ -1,0 +1,444 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<div class="ui grid">
+  <div class="sixteen wide column">
+    <div class="ui segments">
+
+      <!-- ORIGINAL TEEMPLATE -->
+      <div class="ui top attached segment">
+        <h3 class="ui header"> แบบสอบทานเก่า </h3>
+      </div>
+      <div class="ui attached segment">
+        <table class="ui tablet stackable celled table">
+          <thead>
+            <tr>
+              <th class="th-checkbox">
+                <div class="ui fitted checkbox">
+                  <input type="checkbox"><label></label>
+                </div>
+              </th>
+              <th class="text-center" colspan="2"> รายละเอียดแบบสอบทาน </th>
+            </tr>
+          </thead>
+        </table>
+        <div class="ui active inverted dimmer" *ngIf="loading.tableOrigins">
+          <div class="ui text text-center loader" colspan="3">กำลังโหลด..</div>
+        </div>
+        <div class="scrollable" [ngClass]="{'minHeight': loading.tableOrigins}">
+          <table class="ui tablet stackable celled table">
+            <tbody>
+              <ng-container *ngIf="!loading.tableOrigins">
+                <tr *ngIf="origins.length == 0">
+                  <td class="text-center" colspan="3">ไม่พบข้อมูล</td>
+                </tr>
+                <ng-container *ngFor="let origin of origins">
+                  <tr>
+                    <td class="td-checkbox">
+                      <div class="ui fitted checkbox">
+                        <input type="checkbox"><label></label>
+                      </div>
+                    </td>
+                    <td colspan="2"> {{ origin.qtnMainDetail }} </td>
+                  </tr>
+                  <ng-container *ngIf="origin.detail.length > 0">
+                    <tr *ngFor="let detail of origin.detail">
+                      <td class="td-checkbox"></td>
+                      <td class="td-checkbox">
+                        <div class="ui fitted checkbox">
+                          <input type="checkbox"><label></label>
+                        </div>
+                      </td>
+                      <td> {{ detail.qtnMinorDetail }} </td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ui bottom attached segment grid">
+        <div class="sixteen wide center aligned column">
+          <button type="button" class="ui mini green button">
+            <i class="plus icon"></i>
+            เพิ่ม
+          </button>
+        </div>
+      </div>
+      <!-- ORIGINAL TEEMPLATE -->
+
+      <!-- NEW QUESTIONAIRE -->
+      <div class="ui top attached segment">
+        <h3 class="ui header">
+          แบบสอบทานใหม่
+          <button type="button" (click)="modal()" class="ui right floated green mini button">
+            <i class="plus icon"></i> เพิ่มรายละเอียด
+          </button>
+        </h3>
+      </div>
+      <div class="ui attached segment">
+        <table class="ui tablet stackable celled table" style="width: 100%">
+          <thead>
+            <tr>
+              <th class="th-checkbox">
+                <div class="ui fitted checkbox">
+                  <input type="checkbox"><label></label>
+                </div>
+              </th>
+              <th class="text-center" colspan="2"> รายละเอียดแบบสอบทาน </th>
+            </tr>
+          </thead>
+        </table>
+        <div class="ui active inverted dimmer" *ngIf="loading.tableNewers">
+          <div class="ui text text-center loader" colspan="3">กำลังโหลด..</div>
+        </div>
+        <div class="scrollable" [ngClass]="{'minHeight': loading.tableNewers}">
+          <table class="ui tablet stackable celled table">
+            <tbody>
+              <ng-container *ngIf="!loading.tableNewers">
+                <tr *ngIf="newers.length == 0">
+                  <td class="text-center" colspan="3">ไม่พบข้อมูล</td>
+                </tr>
+                <ng-container *ngFor="let newer of newers">
+                  <tr>
+                    <td class="td-checkbox">
+                      <div class="ui fitted checkbox">
+                        <input type="checkbox"><label></label>
+                      </div>
+                    </td>
+                    <td colspan="2"> {{ newer.qtnMainDetail }} </td>
+                  </tr>
+                  <ng-container *ngIf="newer.detail.length > 0">
+                    <tr *ngFor="let detail of newer.detail">
+                      <td class="td-checkbox"></td>
+                      <td class="td-checkbox">
+                        <div class="ui fitted checkbox">
+                          <input type="checkbox"><label></label>
+                        </div>
+                      </td>
+                      <td> {{ detail.qtnMainDetail }} </td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ui bottom attached segment grid">
+        <div class="sixteen wide center aligned column">
+          <button type="button" class="ui mini primary button">
+            <i class="save icon"></i>
+            บันทึก
+          </button>
+          <button type="button" class="ui mini red button">
+            <i class="trash icon"></i>
+            ลบ
+          </button>
+          <button type="button" (click)="back()" class="ui mini button">
+            <i class="arrow left icon"></i>
+            ยกเลิก
+          </button>
+        </div>
+      </div>
+      <!-- NEW QUESTIONAIRE -->
+
+    </div>
+  </div>
+</div>
+
+
+<ui-modal [id]="'add'" type="custom">
+  <div class="header">เพิ่มรายละเอียด</div>
+  <div class="content" [formGroup]="formAddDetail">
+    <div class="ui form" formArrayName="formDetails">
+      <ng-container [formGroupName]="i" *ngFor="let formDetail of formDetails.controls; let i = index">
+        <div class="inline fields" *ngIf="formDetail.get('mainDetail')">
+          <div class="one wide field">
+            <h4>1</h4>
+          </div>
+          <div class="fifteen wide field">
+            <div class="ui input">
+              <input type="text" name="mainDetail{{i}}" formControlName="mainDetail">
+            </div>
+          </div>
+        </div>
+        <div class="inline fields" *ngIf="formDetail.get('minorDetail')">
+          <div class="one wide field"></div>
+          <div class="one wide field">
+            <h4>1.{{i}}</h4>
+          </div>
+          <div class="fourteen wide field">
+            <div class="ui input">
+              <input type="text" name="minorDetail{{i}}" formControlName="minorDetail">
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui grid">
+      <div class="sixteen wide center aligned column">
+        <button class="ui positive mini button" type="button">
+          <i class="checkmark icon"></i>
+          ยืนยัน
+        </button>
+        <button class="ui mini button" type="button" (click)="dismiss()">
+          <i class="remove icon"></i>
+          ยกเลิก
+        </button>
+      </div>
+    </div>
+  </div>
+</ui-modal>
+
+
+
+
+
+
+
+<!-- 
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<div class="ui grid">
+  <div class="sixteen wide column">
+    <div class="ui segment">
+      <div class="ui grid">
+        <div class="sixteen wide column">
+          <label>รายละเอียดแบบสอบถาม (เดิม)</label>
+          <div class="dataTables_scroll">
+            <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+              <div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 100%; padding-right: 0px;">
+                <table class="ui small celled table aligned hover dataTable no-footer" role="grid" style="margin-left: 0px; width: 100%;">
+                  <thead>
+                    <tr>
+                      <th style="text-align: left !important ;width: 8%">
+                        <div class="ui checkbox">
+                          <input type="checkbox" name="chk1" id="chk1" (click)="chkAll($event, '_table', 1)">
+                          <label></label>
+                        </div>
+                      </th>
+                      <th style="text-align: center !important ;width: 92%">รายการ</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+            <div class="dataTables_scrollBody" (scroll)="onScroll($event, 'option')" style="position: relative; overflow: auto; max-height: 360px; width: 100%;">
+              <table class="ui small celled table aligned hover dataTable no-footer" id="datatable" role="grid" style="width: 100%;">
+                <thead>
+                  <tr>
+                    <th style="text-align: left !important ;width: 8%;display: none"></th>
+                    <th style="text-align: left !important ;width: 92%;display: none"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let t of _table; let i = index">
+                    <td style="width: 8%;">
+                      <div class="ui checkbox" *ngIf="t.qtnReportHdrId">
+                        <input type="checkbox" id="chk1-{{i}}" name="chk1-{{i}}" *ngIf="t.qtnReportHdrId" (change)="chck(t.qtnReportManId, 'man', $event, 1, '_table')">
+                        <label></label>
+                      </div>
+                      <div class="ui checkbox" style="margin-left: 2.5em" *ngIf="!t.qtnReportHdrId">
+                        <input type="checkbox" id="chk1-{{i}}" name="chk1-{{i}}" *ngIf="!t.qtnReportHdrId" (change)="chck(t.qtnReportDtlId, 'dtl', $event, 1, '_table')">
+                        <label></label>
+                      </div>
+                    </td>
+                    <td style="width: 92%;">{{t.qtnMainDetail}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="sixteen wide center aligned column">
+          <button type="button" (click)="onAdd2SaveList()" class="ui mini primary button">
+            <i class="save icon"></i>
+            เพิ่ม
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui attached segment">
+      <form class="ui form" (submit)="onAdd2Save($event)">
+
+        <div class="inline fields">
+          <div class="ten wide field">
+            <label>รายละเอียดแบบสอบถาม (ใหม่)</label>
+          </div>
+        </div>
+
+        <div class="inline fields">
+          <div class="two wide field topic">
+            <label>ข้อหลัก</label>
+          </div>
+          <div class="twelve wide field">
+            <input class="custom" type="text" id="mainDetail" name="mainDetail" [(ngModel)]="mainDetail"
+              [attr.required]="true">
+          </div>
+        </div>
+        <div class="inline fields" *ngFor="let min of minorDetail; let i = index" [attr.data-index]="i">
+          <div class="one wide field"></div>
+          <div class="two wide field topic">
+            <label>ข้อย่อย[{{ i+1 }}]</label>
+          </div>
+          <div class="eleven wide field">
+            <input class="custom" type="text" id="minorDetail{{i}}" name="minorDetail{{i}}" [attr.required]="true">
+          </div>
+          <div class="one wide field">
+            <a (click)="onDelField(i)" style="cursor: pointer;color: red">
+              <i class="delete icon"></i>
+            </a>
+          </div>
+        </div>
+        <div class="inline fields">
+          <div class="three wide field"></div>
+          <div class="eleven wide field"></div>
+          <div class="one wide field">
+            <a class="primary" (click)="onAddField()" style="cursor: pointer;">
+              <i class="add icon"></i>
+            </a>
+          </div>
+        </div>
+        <div class="inline fields">
+          <div class="sixteen wide field">
+            <div class="ui center aligned grid btn">
+              <button type="submit" class="ui mini primary button">
+                <i class="save icon"></i>
+                เพิ่ม
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="ui segment">
+      <div class="ui centered grid">
+        <div class="sixteen wide column">
+          <label>รายละเอียดแบบสอบถาม (ใหม่)</label>
+          <div class="dataTables_scroll">
+            <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+              <div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 100%; padding-right: 0px;">
+                <table class="ui small celled table aligned hover dataTable no-footer" role="grid" style="margin-left: 0px; width: 100%;">
+                  <thead>
+                    <tr>
+                      <th style="text-align: left !important ;width: 8%">
+                        <div class="ui checkbox">
+                          <input type="checkbox" name="chk2" id="chk2" (click)="chkAll($event, 'table', 2)">
+                          <label></label>
+                        </div>
+                      </th>
+                      <th style="text-align: center !important ;width: 92%;" colspan="2">รายการ</th>
+                      <th style="text-align: center !important ;width: 48px; display: none">&nbsp;</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+            <div class="dataTables_scrollBody" (scroll)="onScroll($event, 'option2')" style="position: relative; overflow: auto; max-height: 360px; width: 100%;">
+              <table class="ui small celled table aligned hover dataTable no-footer" id="datatable" role="grid" style="width: 100%;">
+                <thead>
+                  <tr>
+                    <th style="text-align: left !important ;width: 8%;display: none"></th>
+                    <th style="text-align: left !important ;width: 92%;display: none" colspan="2"></th>
+                    <th style="text-align: center !important ;width: 48px;display: none">&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let t of table; let i = index">
+                    <td style="width: 8%;">
+                      <div class="ui checkbox" *ngIf="t.qtnReportHdrId">
+                        <input type="checkbox" id="chk2-{{i}}" name="chk2-{{i}}" *ngIf="t.qtnReportHdrId" (change)="chck(t.qtnReportManId, 'man', $event, 2, '_table')">
+                        <label></label>
+                      </div>
+                      <div class="ui checkbox" style="margin-left: 2.5em" *ngIf="!t.qtnReportHdrId">
+                        <input type="checkbox" id="chk2-{{i}}" name="chk2-{{i}}" *ngIf="!t.qtnReportHdrId" (change)="chck(t.qtnReportDtlId, 'dtl', $event, 2, '_table')">
+                        <label></label>
+                      </div>
+                    </td>
+                    <td style="width: 92%;">{{t.qtnMainDetail}}</td>
+                    <td style="width: 48px">
+                      <button class="ui mini icon button" type="button" *ngIf="t.qtnReportHdrId" (click)="edit(t.qtnReportManId, 'man')">
+                        <i class="edit icon"></i>
+                      </button>
+                      <button class="ui mini icon button" type="button" *ngIf="!t.qtnReportHdrId" (click)="edit(t.qtnReportDtlId, 'dtl')">
+                        <i class="edit icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="sixteen wide center aligned column">
+          <button type="button" (click)="onSave()" class="ui mini primary {{ !unsave() ? 'disabled' : '' }} button">
+            <i class="save icon"></i>
+            บันทึก
+          </button>
+          <button type="button" (click)="setRL(0)" class="ui mini primary button">
+            <i class="setting icon"></i>
+            กำหนดเงื่อนไขความเสี่ยง
+          </button>
+          <button type="button" (click)="delete()" class="ui red {{ chk2.length==0 ? 'disabled' : ''}} mini button">
+            <i class="trash icon"></i> ลบ
+          </button>
+          <button type="button" (click)="onCancel()" class="ui mini button">
+            ยกเลิก
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="sixteen wide column" *ngIf="toggleRL">
+    <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+      <span>กำหนดเงื่อนไขความเสี่ยงประเมินระบบการควบคุมภายใน</span>
+    </div>
+    <div class="ui attached segment">
+      <condition class="ui form" (has)="chkRL($event)" (out)="setRL($event)" [riskId]="headerId" [riskType]="RISK_TYPE"
+        [page]="PAGE"></condition>
+    </div>
+  </div>
+</div>
+<ui-modal [id]="'int02-3'" [size]="'small'" [type]="'custom'">
+  <div class="header">แก้ไขข้อมูล</div>
+  <div class="content">
+    <form class="ui form" (submit)="saveMsg(m)" #m="ngForm">
+      <div class="inline fields">
+        <div class="two wide field">
+          <label class="full-width text-right">
+            ข้อความ
+          </label>
+        </div>
+        <div class="twelve wide field {{ m.submitted && m.controls.msg.invalid ? 'error' : '' }}">
+          <div class="ui input">
+            <textarea name="msg" rows="2" ngModel required></textarea>
+            <input type="hidden" name="msgId" ngModel>
+            <input type="hidden" name="msgType" ngModel>
+          </div>
+        </div>
+        <div class="two wide field text-left">
+          <button class="ui mini green icon button" type="submit">
+            <i class="check icon"></i>
+          </button>
+          <button class="ui mini red icon button" type="button" (click)="exit()">
+            <i class="times icon"></i>
+          </button>
+        </div>
+      </div>
+      <div class="inline fields">
+        <div class="two wide field">&nbsp;</div>
+        <div class="twelve wide field">
+          <div class="ui negative message full-width" *ngIf="m.submitted && m.controls.msg.invalid">
+            <p>ไม่สามารถแก้ไขได้หากไม่มีข้อมูล</p>
+          </div>
+        </div>
+        <div class="two wide field">&nbsp;</div>
+      </div>
+    </form>
+  </div>
+</ui-modal> -->

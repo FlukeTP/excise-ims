@@ -1,0 +1,120 @@
+<!-- <app-breadcrumb [route]="breadcrumb"></app-breadcrumb> -->
+<div class="ui centered grid">
+
+    <div class="centered row full-height" *ngIf="!loading">
+        <div class="eight wide column nodata" *ngIf="questionnaire.length == 0">
+            <h2 class="ui header">
+                <div class="auto">
+                    <i class="exclamation triangle icon"></i>
+                    <div class="content">
+                        ขณะนี้ไม่สามารถตอบแบบสอบถามได้<br>
+                        เนื่องจากระบบได้ปิดรับแบบสอบถามแล้ว
+                        <div class="sub header">กรุณาเข้ามาใหม่อีกครั้ง</div>
+                    </div>
+                </div>
+            </h2>
+        </div>
+        <form class="column ui form" *ngIf="questionnaire.length > 0" id="form" (submit)="onSubmit($event)" #f
+            ngNativeValidate>
+            <div class="ui segments" *ngFor="let qtn of questionnaire; let i = index">
+                <div class="ui top attached segment" id="title{{i}}">
+                    <h4 class="text-center">{{ qtn.title }}</h4>
+                </div>
+                <div class="ui middle attached segment" id="content{{i}}">
+                    <table class="ui celled table striped selectable">
+                        <thead class="text-center">
+                            <tr>
+                                <th rowspan="2" style="width: 5%">ที่</th>
+                                <th rowspan="2">รายการ</th>
+                                <th>มี / ใช่</th>
+                                <th>ไม่มี / ไม่ใช่</th>
+                            </tr>
+                            <tr>
+                                <th class="border">สมบูรณ์</th>
+                                <th>ไม่สมบูรณ์</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="qtn.detail.length == 0">
+                            <tr>
+                                <td class="text-center" colspan="4">ไม่พบแบบสอบถาม</td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="qtn.detail.length>0">
+                            <tr *ngFor="let detail of qtn.detail; let j = index" class="{{ detail.headerId ? 'head' : '' }}">
+
+                                <td *ngIf="detail.headerId && detail.type !== 'header'" class="text-center">{{detail.order}}</td>
+                                <td *ngIf="detail.headerId && detail.type !== 'header'" colspan="3">{{detail.content}}</td>
+
+                                <td *ngIf="detail.headerId && detail.type === 'header'" class="text-center">{{detail.order}}</td>
+                                <td *ngIf="detail.headerId && detail.type === 'header'">{{detail.content}}</td>
+                                <td *ngIf="detail.headerId && detail.type === 'header'" class="text-center">
+                                    <div class="field">
+                                        <div class="ui checkbox {{ questionnaire[i].finished == 'Y' ? 'disabled' : '' }}">
+                                            <input type="radio" name="point_header_{{questionnaire[i].detail[j].headerId}}"
+                                                value="Y" [(ngModel)]="questionnaire[i].detail[j].point" id="point_header_{{questionnaire[i].detail[j].headerId}}">
+                                            <label></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td *ngIf="detail.headerId && detail.type === 'header'" class="text-center">
+                                    <div class="field">
+                                        <div class="ui checkbox {{ questionnaire[i].finished == 'Y' ? 'disabled' : '' }}">
+                                            <input type="radio" name="point_header_{{questionnaire[i].detail[j].headerId}}"
+                                                value="N" [(ngModel)]="questionnaire[i].detail[j].point" id="point_header_{{questionnaire[i].detail[j].headerId}}">
+                                            <label></label>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td *ngIf="detail.detailId" class="text-right">{{detail.order}}</td>
+                                <td *ngIf="detail.detailId">{{detail.content}}</td>
+                                <td *ngIf="detail.detailId" class="text-center">
+                                    <div class="field">
+                                        <div class="ui checkbox {{ questionnaire[i].finished == 'Y' ? 'disabled' : '' }}">
+                                            <input type="radio" name="point_detail_{{questionnaire[i].detail[j].detailId}}"
+                                                value="Y" [(ngModel)]="questionnaire[i].detail[j].point" id="point_detail_{{questionnaire[i].detail[j].detailId}}">
+                                            <label></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td *ngIf="detail.detailId" class="text-center">
+                                    <div class="field">
+                                        <div class="ui checkbox {{ questionnaire[i].finished == 'Y' ? 'disabled' : '' }}">
+                                            <input type="radio" name="point_detail_{{questionnaire[i].detail[j].detailId}}"
+                                                value="N" [(ngModel)]="questionnaire[i].detail[j].point" id="point_detail_{{questionnaire[i].detail[j].detailId}}">
+                                            <label></label>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="ui form" *ngIf="qtn.detail.length>0">
+                        <div class="field">
+                            <label class="text-left">สรุปผลการสอบทาน</label>
+                            <div class="ui input">
+                                <textarea [disabled]="questionnaire[i].finished == 'Y'" name="conclusion_{{questionnaire[i].detail[0].headerId}}"
+                                    [(ngModel)]="questionnaire[i].conclusion" id="conclusion_{{questionnaire[i].detail[0].headerId}}"
+                                    rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui grid" *ngIf="questionnaire[0].finished == null || questionnaire[0].finished == 'N'">
+                <div class="save-btn center aligned column">
+                    <button class="ui mini primary button {{saving ? 'loading' : ''}}" type="submit">บันทึก</button>
+                    <button class="ui mini primary button {{questionnaire[0].finished == null || !questionnaire[0].finished == 'N' ? 'disabled' : ''}}"
+                        (click)="send()" type="button">ส่งผลการประเมินแบบสอบถาม</button>
+                </div>
+            </div>
+        </form>
+        <!-- <div class="ui grid">
+                <div class="save-btn center aligned column">
+                    <button class="ui mini primary button" type="submit">บันทึก</button>
+                </div>
+            </div> -->
+        <!-- </form> -->
+    </div>
+</div>

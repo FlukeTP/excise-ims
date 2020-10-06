@@ -1,0 +1,187 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<div class="ui grid">
+    <div class="sixteen wide column">
+        <h2 class="ui header">สร้างกระดาษทำการคัดเลือกราย</h2>
+
+        <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+            <span>สร้างกระดาษทำการคัดเลือกราย</span>
+        </div>
+
+        <div class="ui attached segment">
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="ten wide field">
+                    </div>
+                    <div class="six wide field">
+                        <label class="custom-label-w-20">เลขที่วิเคราะห์ข้อมูล</label>
+                        <input value="{{analysNumber}}" readonly="" class="custom-readonly">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="thirteen wide field">
+                        <label class="custom-label-w-35">ระยะเวลาที่ตรวจสอบ</label>
+                        <div class="four ui action input">
+                            <input type="text" placeholder="ดด/ปปปป" value="{{before}}" readonly="" class="custom-readonly">
+                            <button class="ui icon button">
+                                <i class="add to calendar icon"></i>
+                            </button>
+                        </div>
+                        <div class="one">
+                            <label>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</label>
+                        </div>
+                        <div class="four ui action input">
+                            <input type="text" placeholder="ดด/ปปปป" value="{{last}}" readonly="" class="custom-readonly">
+                            <button class="ui icon button">
+                                <i class="add to calendar icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="eight wide field">&nbsp;&nbsp;&nbsp;
+                        <label class="custom-label-w-20">เลขที่กระดาษทำการ</label>
+                        <input value="" readonly="" class="custom-readonly">
+                    </div>
+                </div>
+
+                <div class="inline fields" *ngFor="let num of _num1; let i = index" [attr.data-index]="i">
+                    <div class="two wide field">
+                        <label>เงื่อนไขที่ &nbsp;&nbsp;{{i+1}}</label>
+                    </div>
+                    <div class="two wide field" style="padding-right: 0px;">
+                        <label>จำนวนเดือนที่ชำระภาษี</label>
+                    </div>
+                    <div class="one wide field" style="padding-left: 10px; padding-right: 0px;">
+                        <input type="number" name="_num1{{i}}" [(ngModel)]="_num1[i]" readonly="" class="custom-readonly">
+                    </div>
+                    <div class="one wide field">
+                        <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ถึง</label>
+                    </div>
+                    <div class="one wide field">
+                        <input type="number" name="_num2{{i}}" [(ngModel)]="_num2[i]" readonly="" class="custom-readonly">
+                    </div>
+                    <div class="four wide field">
+                        <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ช่วงร้อยละที่ต้องการแยกกลุ่มข้อมูล</label>
+                    </div>
+                    <div class="two wide field">
+                        <input type="number" name="_percent1{{i}}" [(ngModel)]="_percent1[i]" readonly="" class="custom-readonly">
+                    </div>
+                    <div class="one wide field">
+                        <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ถึง</label>
+                    </div>
+                    <div class="two wide field">
+                        <input type="number" name="_percent2{{i}}" [(ngModel)]="_percent2[i]" readonly="" class="custom-readonly">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui segment">
+            <div class="ui grid">
+                <div class="three wide column" style="padding-bottom: 0">
+                    
+                </div>
+                <div class="six wide column" style="padding-bottom: 0">
+                    <button class="ui mini primary button">
+                        <i class="list icon"></i>
+                        แสดงข้อมูลฉบับย่อ
+                    </button>
+                    <button class="ui mini primary button" routerLink="/working-paper-1-full-trader">
+                        <i class="list icon"></i>
+                        แสดงข้อมูลฉบับเต็ม
+                    </button>
+                </div>
+                <div class="seven wide column" style="padding-bottom: 0">
+                    <div class="ui form">
+                        <div class="inline fields">
+                            <div class="twelve wide field">
+                                <label> พิกัด</label>
+                                <select class="ui dropdown ai" name="coordinates" id="coordinates" (change)="changeCoordinates()">
+                                    <option value="">ทั้งหมด</option>
+                                    <option *ngFor="let list of coordinatesArr">{{list.value1}}</option>
+                                </select>
+                            </div>
+                            <div class="four wide field">
+                                <button type="button" class="ui mini button" (click)="searchAll()"><i class="sync icon" ></i>ข้อมูลทั้งหมด</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui grid">
+                <button  (click)="toggleBar()" class="ui button custom-menu" type="button"><i class="bars icon"></i>เมนู</button>
+            </div><br>
+            <div class="ui grid" style="margin-top: 0">
+                <div style="padding-right: 0;" [ngClass]="{'three wide column': !toggle, 'transition-left' : toggle}">
+                    <div class="ui vertical menu" style="width: auto">
+                        <div class="item">
+                            <div class="header">แยกข้อมูลตามกลุ่มของการชำระภาษี</div>
+                        </div>
+                        <div class="item">
+                            <div class="menu">
+                                <a class="item hover {{(( _num1.length>1)&&(indexFilter === '')) && 'active'}}" *ngIf="_num1.length>1" (click)="filterAllDataByCriteria()">-
+                                    เงื่อนไขทั้งหมด
+                                </a>
+                            </div>
+                            <div class="menu" *ngFor="let num of _num1; let i = index" (click)="filterDataByCriteria(i)">
+                                <a class="item hover {{ ( indexFilter === i ) && 'active' }}">- เงื่อนไขที่ {{i+1}}</a>
+                            </div>
+                            <div class="menu">
+                                <a class="item hover {{(indexFilter === 'N') && 'active'}}" (click)="FlagN()">- รายที่ไม่อยู่ในเงื่อนไข</a>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div style="padding-top: 0" [ngClass]="{'thirteen': !toggle, 'sixteen': toggle,'wide': true, 'column': true, 'transition-left-2': toggle}">
+                    <div>
+                        <table id="userManagementDt" class="ui small celled table aligned hover striped selectable nowrap" style="width: 100%">
+                            <thead id="trDrinamic">
+                                <tr>
+                                    <th rowspan="2" style="text-align: center !important">ทะเบียนสรรพสามิต เดิม/ใหม่</th>
+                                    <th rowspan="2" style="text-align: center !important">เลขทะเบียนสรรพสามิตเก่า</th>
+                                    <th rowspan="2" style="text-align: center !important">ชื่อผู้ประกอบการ</th>
+                                    <th rowspan="2" style="text-align: center !important">ชื่อโรงอุตสาหกรรม/สถานบริการ</th>
+                                    <th rowspan="2" style="text-align: center !important">ภาค</th>
+                                    <th rowspan="2" style="text-align: center !important">พื้นที่</th>
+                                    <th colspan="2" style="text-align: center !important">การชำระภาษีในสภาวะปกติ (บาท)</th>
+                                    <th rowspan="2" style="text-align: center !important">เปลี่ยนแปลง (ร้อยละ)</th>
+                                    <th rowspan="2" style="text-align: center !important">เปอร์เซ็นส่วนเบี่ยงเบน</th>
+                                    <th rowspan="2" style="text-align: center !important">ชำระภาษี(เดือน)</th>
+                                    <th colspan="3" style="text-align: center !important">การตรวจสอบภาษีย้อนหลัง 3 ปีงบประมาณ</th>
+                                    
+                                    <th rowspan="2" style="text-align: center !important">พิกัด</th>
+                                    <th rowspan="2" style="text-align: center !important">ที่อยู่โรงอุตสาหกรรม/สถานบริการ</th>
+                                    <th rowspan="2" style="text-align: center !important">สถานะล่าสุด</th>
+                                    <th rowspan="2" style="text-align: center !important">สถานะ/วันที่</th>
+                                    <th colspan="12" style="text-align: center !important">การชำระภาษี {{ month/2 }} เดือนแรก</th>
+                                    <th colspan="12" style="text-align: center !important">การชำระภาษี {{ month/2 }} เดือนหลัง</th>
+                                    <th rowspan="2" style="text-align: center !important">เพิ่มข้อมูลภายนอก</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                    <div class="ui center aligned grid">
+                        <div class="sixteen wide column">
+                            <!-- <button class="ui mini primary button">
+                                <i class="print icon"></i>
+                                พิมพ์กระดาษทำการคัดเลือกราย
+                            </button> -->
+                            <button class="ui mini primary button" (click)="updateFlg()">
+                                <i class="save icon"></i>
+                                บันทึกข้อมูล
+                            </button>
+                            <button class="ui mini button" routerLink="/create-working-paper-trader">
+                                <i class="refresh icon"></i>
+                                ล้างข้อมูล
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

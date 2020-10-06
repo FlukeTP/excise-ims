@@ -1,0 +1,89 @@
+<form ngNativeValidate (submit)="saveCondition($event)">
+  <div class="inline fields">
+    <table id="dataTable" class="ui small celled table striped selectable">
+      <thead>
+        <tr>
+          <th style="text-align: center !important">ที่</th>
+          <th style="text-align: center !important">เงื่อนไข</th>
+          <th style="text-align: center !important">ค่าเริ่มต้น</th>
+          <th style="text-align: center !important">...</th>
+          <th style="text-align: center !important">ค่าสิ้นสุด</th>
+          <th style="text-align: center !important">อัตราความเสี่ยง</th>
+          <th style="text-align: center !important">แปลค่าความเสี่ยง</th>
+          <th style="text-align: center !important">สี</th>
+          <th style="text-align: center !important"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of datas; let i=index">
+          <td class="aligned center">{{i+1}}</td>
+          <td class="aligned center">
+            <select class="ui dropdown ai" id="condition{{i}}" name="condition{{i}}" [attr.required]="true" [(ngModel)]="datas[i].condition"
+              (change)="changeCondution(i)">
+              <option value="<>">ระหว่าง</option>
+              <option value=">">มากกว่า</option>
+              <option value="<">น้อยกว่า</option>
+            </select>
+          </td>
+          <td class="aligned center">
+            <div class="ui input">
+              <input type="number" name="value1{{i}}" [(ngModel)]="datas[i].value1" id="value1{{i}}" required>
+            </div>
+          </td>
+          <td class="aligned center">{{ datas[i].condition ? datas[i].condition : '...' }}</td>
+          <td class="aligned center">
+            <div class="ui input">
+
+              <input type="number" name="value2{{i}}" [(ngModel)]="datas[i].value2" id="value2{{i}}" required="{{ datas[i].condition == '<>' }}">
+            </div>
+          </td>
+
+          <td class="aligned center">
+            <div class="ui input">
+              <input type="number" name="valueRl{{i}}" min="0" max="9" style="width: 100%;" [(ngModel)]="datas[i].valueRl" id="valueRl{{i}}" required>
+            </div>
+          </td>
+          <td class="aligned center">
+            <select class="ui fluid dropdown" name="convertValue{{i}}" [(ngModel)]="datas[i].convertValue" id="convertValue{{i}}" required>
+              <option value="ต่ำมาก">ต่ำมาก</option>
+              <option value="ต่ำ">ต่ำ</option>
+              <option value="ปานกลาง">ปานกลาง</option>
+              <option value="สูง">สูง</option>
+              <option value="สูงมาก">สูงมาก</option>
+            </select>
+          </td>
+          <td class="aligned center">
+            <select class="ui fluid dropdown" name="color{{i}}" [(ngModel)]="datas[i].color" id="color{{i}}" required>
+              <option value="แดง">แดง</option>
+              <option value="เหลือง">เหลือง</option>
+              <option value="เขียว">เขียว</option>
+            </select>
+          </td>
+          <td class="aligned center">
+            <button class="ui icon red mini button" type="button" (click)="delRow(i)">
+              <i class="times icon"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="inline fields latest-inline">
+    <div class="sixteen wide field">
+      <div class="ui center aligned grid btn">
+        <button class="ui mini green button" type="button" (click)="addRow()">
+          <i class="add icon"></i>
+          เพิ่ม
+        </button>
+        <button class="ui mini primary button" type="submit">
+          <i class="save icon"></i>
+          บันทึก
+        </button>
+        <button class="ui mini button" type="button" (click)="cancel()">
+          <i class="close icon"></i>
+          ยกเลิก
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

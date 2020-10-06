@@ -1,0 +1,129 @@
+<div class="ui grid">
+  <div class="sixteen wide column">
+    <h2 class="ui header">สร้างกระดาษทำการคัดเลือกราย</h2>
+
+    <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+      <span>สร้างกระดาษทำการคัดเลือกราย</span>
+    </div>
+
+    <div class="ui attached segment">
+
+      <div class="ui form">
+
+        <div class="inline fields">
+          <div class="ten wide field">
+          </div>
+          <div class="six wide field">
+            <label class="custom-label-w-20">เลขที่วิเคราะห์ข้อมูล</label>
+            <input value="591113-01-00001" readonly="" class="custom-readonly">
+          </div>
+        </div>
+
+        <div class="inline fields">
+          <div class="thirteen wide field">
+            <label class="custom-label-w-35">ระยะเวลาที่ตรวจสอบ</label>
+            <div class="four ui action input">
+              <input type="text" placeholder="ดด/ปปปป" value="01/2559" readonly="" class="custom-readonly">
+              <button class="ui icon button">
+                <i class="add to calendar icon"></i>
+              </button>
+            </div>
+            <div class="one">
+              <label>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</label>
+            </div>
+            <div class="four ui action input">
+              <input type="text" placeholder="ดด/ปปปป" value="12/2560" readonly="" class="custom-readonly">
+              <button class="ui icon button">
+                <i class="add to calendar icon"></i>
+              </button>
+            </div>
+          </div>
+          <div class="eight wide field">&nbsp;&nbsp;&nbsp;
+            <label class="custom-label-w-20">เลขที่กระดาษทำการ</label>
+            <input value="591113-02-00001" readonly="" class="custom-readonly">
+          </div>
+        </div>
+
+        <div class="inline fields">
+          <div class="five wide field">
+            <label style="width: 180em;">กำหนดช่วงร้อยละที่ต้องการแยกกลุ่มข้อมูล</label>
+            <input value="5" readonly="" class="custom-readonly">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ui segment">
+      <div class="ui grid">
+        <div class="three wide column">
+          <div class="ui vertical menu">
+            <div class="item">
+              <div class="header">แยกข้อมูลตามกลุ่มของการชำระภาษี</div>
+            </div>
+            <div class="item">
+              <div class="header">ผู้ประกอบการที่ชำระภาษีครบ 24 เดือน</div>
+              <div class="menu">
+                <a class="item">-อัตราการชำระภาษีเพิ่มขึ้นมากกว่าร้อยละ 5</a>
+                <a class="item">-อัตราการชำระภาษีคงที่ (+-ไม่เกินร้อยละ 5)</a>
+                <a class="item">-อัตราการชำระภาษีลดลงมากกว่าร้อยละ 5</a>
+              </div>
+            </div>
+            <div class="item">
+              <div class="header">ผู้ประกอบการที่ชำระภาษีไม่ครบ 24 เดือน</div>
+              <div class="menu">
+                <a class="item">-อัตราการชำระภาษีเพิ่มขึ้นมากกว่าร้อยละ 5</a>
+                <a class="item">-อัตราการชำระภาษีเพิ่มขึ้นไม่เกินร้อยละ 5</a>
+              </div>
+            </div>
+            <div class="item">
+              <div class="header">ผู้ประกอบการใหม่</div>
+              <div class="menu">
+                <a class="item">-ผู้ประกอบการใหม่</a>
+              </div>
+            </div>
+            <div class="item">
+              <div class="header">สรุปจำนวนตามพิกัดสินค้า</div>
+              <div class="menu">
+                <a class="item">-สรุปจำนวนตามพิกัดสินค้า</a>
+              </div>
+            </div>
+            <div class="item">
+              <div class="header">รวมทุกกลุ่มข้อมูลและรวมพิกัดสินค้า</div>
+              <div class="menu">
+                <a class="item">-รวมทุกกลุ่มข้อมูลและรวมพิกัดสินค้า</a>
+              </div>
+            </div>
+            <div class="item">
+              <div class="header">สร้างบันทึกข้อความขอส่งข้อมูล</div>
+              <div class="menu">
+                <a class="item">-สร้างบันทึกข้อความขอส่งข้อมูล</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="thirteen wide column">
+          <img src="assets/images/create-save-message.JPG" style="width: 100%;">
+
+          <div class="ui center aligned grid">
+            <div class="sixteen wide column">
+              <button class="ui mini primary button">
+                <i class="print icon"></i>
+                พิมพ์บันทึกข้อความพร้อมกระดาษทำการ
+              </button>
+              <button class="ui mini primary button">
+                <i class="print icon"></i>
+                พิมพ์บันทึกข้อความ
+              </button>
+              <button class="ui mini button">
+                <i class="refresh icon"></i>
+                ล้างข้อมูล
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

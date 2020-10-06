@@ -1,0 +1,191 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<div class="ui grid">
+    <div class="sixteen wide column">
+        <h2 class="ui header">ส่งกระดาษทำการคัดเลือกราย</h2>
+
+        <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+            <span>ส่งกระดาษทำการคัดเลือกราย</span>
+        </div>
+
+        <div class="ui attached segment">
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="ten wide field">
+                    </div>
+                    <div class="six wide field">
+                        <label class="custom-label-w-20">เลขที่วิเคราะห์ข้อมูล</label>
+                        <select class="ui dropdown ai" style="width: 100% !important" name="analysNumbers" id="analysNumbers"
+                            [(ngModel)]="analysNumber" (change)="selectAnalysNumbers()" *ngIf="analysNumberArr !== ''">
+                            <option value="">ทั้งหมด</option>
+                            <option *ngFor="let list of analysNumberArr">{{list}}</option>
+                        </select>
+                        <input value="{{analysNumber}}" readonly="" *ngIf="analysNumberArr === ''" class="custom-readonly">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="thirteen wide field">
+                        <label class="custom-label-w-35">ระยะเวลาที่ตรวจสอบ</label>
+                        <div class="four ui action input">
+                            <input type="text" placeholder="ดด/ปปปป" value="{{before}}" id="before" readonly="" class="custom-readonly">
+                            <button class="ui icon button">
+                                <i class="add to calendar icon"></i>
+                            </button>
+                        </div>
+                        <div class="one">
+                            <label>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</label>
+                        </div>
+                        <div class="four ui action input">
+                            <input type="text" placeholder="ดด/ปปปป" value="{{last}}" id="last" readonly="" class="custom-readonly">
+                            <button class="ui icon button">
+                                <i class="add to calendar icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="eight wide field">&nbsp;&nbsp;&nbsp;
+                        <label class="custom-label-w-20">เลขที่กระดาษทำการ</label>
+                        <input [(ngModel)]="workSheetNumber" readonly="" class="custom-readonly">
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="fourteen wide field"></div>
+                    <div class="two wide field">
+                        <input type="hidden" id="exciseId" value="EX" />
+                        <button type="button" id="exciseBtn" style="margin-left: auto" class="ui mini primary button right floated"
+                            (click)="linkToDetail()">
+                            <i class="add icon"></i>
+                            เพิ่มข้อมูล
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="ui segment">
+            <div class="ui active inverted dimmer" *ngIf="loading">
+                <div class="ui text loader">Loading</div>
+            </div>
+                <div class="ui form">
+                    <div class="inline fields">
+                        <div class="three wide field"></div>
+                        <div class="three wide field">
+                            <label style="width: 5em;">ภาค</label>
+                            <select class="ui dropdown ai" style="width: 100% !important" name="sector" id="sector"
+                                (change)="changeSector()">
+                                <option value="">ทั้งหมด</option>
+                                <option *ngFor="let list of sectorArr">{{list.value1}}</option>
+                            </select>                            
+                        </div>
+                        <div class="three wide field">
+                            <label style="width: 5em;">พิกัด</label>
+                            <select class="ui dropdown ai" style="width: 100% !important" name="coordinates" id="coordinates"
+                                (change)="changeCoordinates()">
+                                <option value="">ทั้งหมด</option>
+                                <option *ngFor="let list of coordinatesArr">{{list.value1}}</option>
+                            </select>
+                        </div>
+                        <div class="three wide field"> 
+                            <button class="ui gray button" (click)="onClear()"><i class="undo icon"></i>ข้อมูลทั้งหมด</button>
+                        </div>
+                    </div>
+                </div>
+            <div class="ui grid">
+                    <button  (click)="toggleBar()" class="ui button custom-menu" type="button"><i class="bars icon"></i>เมนู</button>
+                    
+                    <!-- <i (click)="hideProductType()"><i class="bars icon"></i></i>
+                    <i (click)="showProductType()"><i class="bars icon"></i></i> -->
+            </div>
+            <div class="ui grid">
+                <div [ngClass]="{'three wide column': !toggle, 'transition-left' : toggle}" >
+                    <div class="ui vertical menu" style="width: auto">
+                        <div class="item">
+                            <div class="header">แยกข้อมูลตามกลุ่มของการชำระภาษี</div>
+                        </div>
+                        <div class="item">
+                            <div class="menu">                               
+                                <a class="item hover {{flag == 'NOT N' && 'active'}}" (click)="FlagNotN()">-รายที่อยู่ในเงื่อนไข</a>
+                                <a class="item hover {{(flag == 'N' || flag == '') && 'active'}}" (click)="FlagN()">-รายที่ไม่อยู่ในเงื่อนไข</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div [ngClass]="{'thirteen': !toggle, 'sixteen': toggle,'wide': true, 'column': true, 'transition-left-2': toggle}">
+                    <div style="padding-bottom: 14px;">
+                        <table id="userManagementDt" class="ui small celled table aligned nowrap hover" style="width: 100%;">
+                            <thead id="trDrinamic">
+                                <tr style="text-align: center !important">
+                                    <th rowspan="2">ลำดับที่</th>
+                                    <th rowspan="2">ทะเบียนสรรพสามิต เดิม/ใหม่</th>
+                                    <th rowspan="2" style="text-align: center !important">เลขทะเบียนสรรพสามิตเก่า</th>
+                                    <th rowspan="2">ชื่อผู้ประกอบการ</th>
+                                    <th rowspan="2">ชื่อโรงอุตสาหกรรม/สถานบริการ</th>
+                                    <th rowspan="2">ภาค</th>
+                                    <th rowspan="2">พื้นที่</th>
+                                    <th colspan="2">การชำระภาษีในสภาวะปกติ (บาท)</th>
+                                    <th rowspan="2">เปลี่ยนแปลง (ร้อยละ)</th>
+                                    <th rowspan="2" style="text-align: center !important">เปอร์เซ็นส่วนเบี่ยงเบน</th>
+                                    <th rowspan="2">ชำระภาษี(เดือน)</th>
+                                    <th colspan="3">การตรวจสอบภาษีย้อนหลัง 3 ปีงบประมาณ</th>
+                                    
+                                    <th rowspan="2">พิกัด</th>
+                                    <th rowspan="2">ที่อยู่โรงอุตสาหกรรม/สถานบริการ</th>
+                                    <th rowspan="2">สถานะล่าสุด</th>
+                                    <th rowspan="2">สถานะ/วันที่</th>
+                                    <th colspan="12">การชำระภาษี {{ month/2 }} เดือนแรก</th>
+                                    <th colspan="12">การชำระภาษี {{ month/2 }} เดือนหลัง </th>
+                                    <th rowspan="2">เพิ่มข้อมูลภายนอก</th>
+                                </tr>
+                                <tr style="text-align: center !important">
+                                    <th style="border-left: 1px solid rgba(34,36,38,.1);">{{ month/2 }} เดือนแรก</th>
+                                    <th>{{ month/2 }} เดือนหลัง </th>
+                                    <th>2558</th>
+                                    <th>2559</th>
+                                    <th>2560</th>
+                                    <th>พ.ค. 58</th>
+                                    <th>มิ.ย. 58</th>
+                                    <th>ก.ค. 58</th>
+                                    <th>ส.ค. 58</th>
+                                    <th>ก.ย. 58</th>
+                                    <th>ต.ค. 58</th>
+                                    <th>พ.ย. 58</th>
+                                    <th>ธ.ค. 58</th>
+                                    <th>ม.ค. 59</th>
+                                    <th>ก.พ. 59</th>
+                                    <th>มี.ค. 59</th>
+                                    <th>เม.ย. 59 </th>
+                                    <th>พ.ค. 58</th>
+                                    <th>มิ.ย. 58</th>
+                                    <th>ก.ค. 58</th>
+                                    <th>ส.ค. 58</th>
+                                    <th>ก.ย. 58</th>
+                                    <th>ต.ค. 58</th>
+                                    <th>พ.ย. 58</th>
+                                    <th>ธ.ค. 58</th>
+                                    <th>ม.ค. 59</th>
+                                    <th>ก.พ. 59</th>
+                                    <th>มี.ค. 59</th>
+                                    <th>เม.ย. 59 </th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyDrinamic">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="ui center aligned grid">
+                <div class="eight wide column">
+                  <button type="button" class="ui mini primary button" (click)="sendLineUserValues()" routerLink="/add-external-data/send-line-user">
+                    <i class="search icon"></i>
+                    ส่งรายให้ส่วนกลางและภาคพื้นที่
+                  </button>                 
+                </div>
+              </div><br>
+        </div>
+    </div>
+</div>

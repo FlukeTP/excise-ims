@@ -1,0 +1,71 @@
+<div class="ui grid">
+  <div class="sixteen wide column">
+
+    <div class="ui top centered attached header segment" style="background: #1e83db;color: white">
+      <span>ตรวจสอบสินทรัพย์แบบอัพโหลด</span>
+    </div>
+
+    <div class="ui attached segment">
+      <form id="assetBalanceForm" class="ui form" ngNativeValidate>
+        <div class="inline fields">
+          <div class="four wide field"></div>
+          <div class="two wide field">
+            <label>รายงานสินทรัพย์ (GFMIS)</label>
+          </div>
+          <div class="five wide field">
+            <input id="file" type="file" name="file" accept=".xlsx" (change)="onChangeUpload($event)">
+          </div>
+          <div class="two wide field">
+            <a href="" style="text-decoration:  underline;">ตัวอย่างแบบฟอร์มนำเข้าระบบ</a>
+          </div>
+          <div class="three wide field"></div>
+        </div>
+
+        <div class="ui center aligned grid">
+          <div class="sixteen wide column">
+
+            <button class="ui mini yellow button" (click)="onUpload($event)">
+              <i class="upload icon"></i>
+              อัพโหลด
+            </button>
+            <button class="ui mini red button" (click)="clearFile()">
+              <i class="trash alternate icon"></i>
+              ลบไฟล์
+            </button>
+
+          </div>
+        </div>
+
+      </form>
+
+      <br>
+
+      <table id="dataTable" class="ui small celled table striped selectable" style="width: 100%;">
+        <thead>
+          <tr>
+            <th style="text-align: center !important;">เลขที่สินทรัพย์</th>
+            <th style="text-align: center !important;">เลขที่ย่อย</th>
+            <th style="text-align: center !important;">วันที่โอนเป็นทุน</th>
+            <th style="text-align: center !important;">คำอธิบายของสินทรัพย์</th>
+            <th style="text-align: center !important;">มูลค่าการได้มา</th>
+            <th style="text-align: center !important;">ค่าเสื่อมราคาสะสม</th>
+            <th style="text-align: center !important;">มูลค่าตามบัญชี</th>
+          </tr>
+        </thead>
+      </table>
+
+      <br>
+      <div class="ui center aligned grid">
+        <div class="sixteen wide column">
+          <button class="ui mini primary button" (click)="processCheckData()">
+            <i class="check circle icon"></i>
+            เลือกตรวจสอบข้อมูล
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <br>
+
+</div>

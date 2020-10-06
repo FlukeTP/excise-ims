@@ -1,0 +1,171 @@
+<app-breadcrumb [route]="breadcrumb"></app-breadcrumb>
+<br>
+<div class="ui top centered attached header segment" style="background: #1e83db;color: white;">
+    <span>ระบุเงื่อนไขในการค้นหา</span>
+</div>
+<form [formGroup]="searchForm" (submit)="handleSearch($event)">
+    <div class="ui form">
+        <div class="ui attached segment">
+            <div class="inline fields">
+                <div class="one wide field">
+                </div>
+
+                <div class="five wide field">
+                    <label class="text-right full-width">แบบขอเบิก</label>
+                </div>
+
+                <div class="five wide field" [ngClass]="{ 'error': validateField('withdrawRequest') }">
+                    <select class="ui dropdown ai search full-width" formControlName="withdrawRequest" (change)="disabledBtn()">
+                      <option value="">กรุณาเลือก</option>
+                      <option *ngFor="let wdr of withdrawRequestList | async;" [value]="wdr.lovId">
+                        {{ wdr.typeDescription }}
+                      </option>
+                    </select>
+                </div>
+            </div>
+            <br>
+            <div class="ui center aligned grid">
+                <div class="sixteen wide column">
+                    <button class="ui mini primary button" type="submit"><i
+              class="search icon"></i>ค้นหา</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<br>
+<div class="ui top centered attached header segment" style="background: #1e83db;color: white;">
+    <span>ผลการค้นหา</span>
+</div>
+<div class="ui form">
+    <div class="ui attached segment">
+        <table id="dataTable" class="ui small celled table aligned hover striped selectable nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th class="text-center">ผู้เบิก</th>
+                    <th class="text-center">ตำแหน่ง</th>
+                    <th class="text-center">สังกัด</th>
+                    <th class="text-center">วันที่เบิก</th>
+                    <th class="text-center">จำนวนเงินที่ขอเบิก</th>
+                    <th class="text-center">สถานะการดำเนินการ</th>
+                    <th class="text-center">จัดการ</th>
+                </tr>
+            </thead>
+            <!-- <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody> -->
+        </table>
+        <br>
+        <div class="inline fields ">
+            <div class="four wide field">
+            </div>
+
+            <div class="two wide field">
+                <label class="text-right full-width">รวมจำนวนเงินที่ขอเบิก</label>
+            </div>
+        </div>
+
+        <div class="inline fields ">
+            <div class="five wide field">
+            </div>
+
+            <div class="two wide field">
+                <label class="text-right full-width">รอดำเนินการ</label>
+            </div>
+
+            <div class="two wide field">
+                <input class="custom-readonly disabled text-right" id="process" type="text" autocomplete="off">
+            </div>
+
+            <div class="one wide field">
+                <label class="text-left full-width">บาท</label>
+            </div>
+        </div>
+
+        <div class="inline fields ">
+            <div class="five wide field">
+            </div>
+
+            <div class="two wide field">
+                <label class="text-right full-width">ผ่าน</label>
+            </div>
+
+            <div class="two wide field">
+                <input class="custom-readonly disabled text-right" id="pass" type="text" autocomplete="off">
+            </div>
+
+            <div class="one wide field">
+                <label class="text-left full-width">บาท</label>
+            </div>
+        </div>
+
+        <div class="inline fields ">
+            <div class="five wide field">
+            </div>
+
+            <div class="two wide field">
+                <label class="text-right full-width">ไม่ผ่าน</label>
+            </div>
+
+            <div class="two wide field">
+                <input class="custom-readonly disabled text-right" id="notPass" type="text" autocomplete="off">
+            </div>
+
+            <div class="one wide field">
+                <label class="text-left full-width">บาท</label>
+            </div>
+        </div>
+
+        <br>
+        <div class="ui center aligned grid">
+            <div class="sixteen wide column">
+                <button class="ui mini primary button" type="button" (click)="total($event)" [ngClass]="{'disabled': !checkBtn1}">
+                    <i class="save icon"></i>ทำใบขอเบิก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div id="showTable">
+    <div class="ui top centered attached header segment" style="background: #1e83db;color: white;">
+        <span>รายละเอียดใบขอเบิก</span>
+    </div>
+    <div class="ui form">
+        <div class="ui attached segment">
+            <table id="dataTable" class="ui small celled table aligned hover striped selectable" style="width:100%">
+                <thead>
+                    <tr>
+                        <th class="text-center">เลขที่ทำการ</th>
+                        <th class="text-center">เลขที่ใบขอเบิก</th>
+                        <th class="text-center">ผู้สร้างใบขอเบิก</th>
+                        <!-- <th class="text-center">ตำแหน่ง</th>
+                        <th class="text-center">สังกัด</th> -->
+                        <th class="text-center">วันที่สร้างใบขอเบิก</th>
+                        <th class="text-center">จำนวนเงินที่ขอเบิก</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">{{groupData.id}}</td>
+                        <td class="text-center">{{groupData.billLading===''? '-':groupData.billLading}}</td>
+                        <td>{{groupData.createdBy}}</td>
+                        <!-- <td>{{groupData.position}}</td>
+                        <td class="{{groupData.affiliation===''?'text-center':''}}">{{groupData.affiliation===''?'-':groupData.affiliation}}</td> -->
+                        <td class="text-center">{{groupData.createdDateStr}}</td>
+                        <td class="text-right">{{groupData.amount}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <div class="ui center aligned grid">
+                <div class="sixteen wide column">
+                    <button class="ui mini primary button" type="button" (click)="save($event)" [ngClass]="{'disabled': !checkBtn2}"><i class="save icon"></i>บันทึก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
